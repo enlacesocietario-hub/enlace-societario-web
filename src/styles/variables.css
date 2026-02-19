@@ -1,0 +1,102 @@
+:root {
+    /* --- Colors --- */
+    /* Primary / Brand */
+    --color-primary: #1A2E40;
+    /* Navy Blue - Authority, Trust */
+    --color-primary-light: #2A445C;
+    --color-primary-dark: #111F2D;
+
+    /* Secondary / Action */
+    --color-secondary: #2E8B57;
+    /* Emerald Green - Growth, Success */
+    --color-secondary-hover: #246B43;
+
+    /* Accent */
+    --color-accent: #CBA135;
+    /* Gold - Premium, Quality */
+    --color-accent-light: #E5C365;
+
+    /* Neutrals */
+    --color-bg-body: #FFFFFF;
+    --color-bg-alt: #F8F9FA;
+    /* Very Light Grey/Blue for sections */
+    --color-bg-dark: #1A2E40;
+    /* Dark bg for footer/hero */
+
+    --color-text-main: #1A2E40;
+    /* Deep Navy for main text (softer than black) */
+    --color-text-body: #4A5568;
+    /* Dark Grey for paragraphs */
+    --color-text-light: #E2E8F0;
+    /* Light Grey for text on dark bg */
+    --color-text-white: #FFFFFF;
+
+    --color-border: #E2E8F0;
+
+    /* --- Typography --- */
+    --font-heading: 'Plus Jakarta Sans', sans-serif;
+    --font-body: 'Plus Jakarta Sans', sans-serif;
+
+    --scale-ratio: 1.25;
+    --text-xs: 0.8rem;
+    --text-sm: 0.9rem;
+    --text-base: 1rem;
+    --text-lg: 1.25rem;
+    /* 20px */
+    --text-xl: 1.563rem;
+    /* 25px */
+    --text-2xl: 1.953rem;
+    /* 31px */
+    --text-3xl: 2.441rem;
+    /* 39px */
+    --text-4xl: 3.052rem;
+    /* 48px */
+    --text-5xl: 3.815rem;
+    /* 61px */
+
+    /* --- Spacing System (4px baseline) --- */
+    --space-1: 0.25rem;
+    /* 4px */
+    --space-2: 0.5rem;
+    /* 8px */
+    --space-3: 0.75rem;
+    /* 12px */
+    --space-4: 1rem;
+    /* 16px */
+    --space-6: 1.5rem;
+    /* 24px */
+    --space-8: 2rem;
+    /* 32px */
+    --space-12: 3rem;
+    /* 48px */
+    --space-16: 4rem;
+    /* 64px */
+    --space-20: 5rem;
+    /* 80px */
+    --space-24: 6rem;
+    /* 96px */
+    --space-32: 8rem;
+    /* 128px */
+
+    /* --- Layout --- */
+    --container-width: 1200px;
+    --container-padding: var(--space-4);
+    --header-height: 80px;
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 16px;
+    --radius-btn: 6px;
+    /* New variable for buttons */
+
+    /* --- Effects --- */
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* --- Breakpoints (Reference only, used in media queries) ---
+   sm: 640px
+   md: 768px
+   lg: 1024px
+   xl: 1280px
+*/

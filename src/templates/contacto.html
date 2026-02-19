@@ -1,0 +1,57 @@
+<section class="hero text-center" style="padding: 6rem 0;">
+    <div class="container">
+        <h1>Solicitar asesoramiento</h1>
+        <p style="margin-top: 1rem; font-size: 1.125rem;">Déjanos tus datos y un especialista te contactará a la
+            brevedad para asesorarte.</p>
+    </div>
+</section>
+
+<section class="section section-bg-alt">
+    <div class="container" style="max-width: 800px;">
+        <form id="contact-form" class="card" style="border-top: none; box-shadow: var(--shadow-lg);" action="#"
+            method="POST">
+            <div class="grid-2" style="gap: 1rem; grid-template-columns: 1fr 1fr; margin-bottom: 0;">
+                <div class="form-group">
+                    <label for="nombre">Nombre</label>
+                    <input type="text" id="nombre" name="nombre" required>
+                </div>
+                <div class="form-group">
+                    <label for="apellido">Apellido</label>
+                    <input type="text" id="apellido" name="apellido" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="empresa">Empresa o Negocio</label>
+                <input type="text" id="empresa" name="empresa">
+            </div>
+
+            <div class="grid-2" style="gap: 1rem; grid-template-columns: 1fr 1fr; margin-bottom: 0;">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="telefono">Teléfono / WhatsApp</label>
+                    <input type="tel" id="telefono" name="telefono" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="servicio">Tipo de Servicio</label>
+                <select id="servicio" name="servicio" required>
+                    <option value="">Seleccione una opción</option>
+                    <option value="constitucion">Constitución de sociedad</option>
+                    <option value="reforma">Reforma de una sociedad vigente</option>
+                    <option value="conflicto">Resolución de conflicto societario</option>
+                    <option value="otros">Otros trámites societarios</option>
+                    <option value="contable">Servicio contable e impositivo</option>
+                </select>
+            </div>
+
+            <div style="margin-top: 2rem; text-align: center;">
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Enviar Consulta</button>
+            </div>
+        </form>
+    </div>
+</section>

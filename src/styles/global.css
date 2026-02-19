@@ -1,0 +1,42 @@
+@import 'variables.css';
+@import 'typography.css';
+@import 'layout.css';
+@import 'components.css';
+
+/* Misc or Page Specific Overrides */
+.metrics-grid {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    text-align: center;
+}
+
+.metric-item h3 {
+    font-size: var(--text-4xl);
+    color: var(--color-accent);
+    margin-bottom: var(--space-2);
+}
+
+.metric-item p {
+    font-size: var(--text-sm);
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    color: var(--color-text-white);
+}
+
+/* Post Content Styling */
+.post-content {
+    font-size: 1.125rem;
+    line-height: 1.8;
+}
+
+.post-content h2 {
+    margin-top: var(--space-8);
+}
+
+.post-content ul {
+    list-style: disc;
+    padding-left: var(--space-6);
+    margin-bottom: var(--space-4);
+}

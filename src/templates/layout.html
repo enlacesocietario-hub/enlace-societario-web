@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{meta_title}} | Enlace Societario</title>
+    <meta name="description" content="{{meta_description}}">
+    <link rel="canonical" href="{{canonical_url}}">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="/styles/global.css">
+
+    <!-- Schema -->
+    {{schema_json}}
+</head>
+
+<body>
+    <header class="main-header">
+        <div class="container">
+            <div class="logo">
+                <a href="/" style="display: flex; align-items: center; gap: 0.5rem; text-decoration: none;">
+                    <img src="/images/logo-enlace.png" alt="Enlace Societario" style="height: 84px; width: auto;">
+                </a>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="/" class="nav-link">INICIO</a></li>
+                    <li><a href="/nosotros" class="nav-link">Nosotros</a></li>
+                    <li><a href="/servicios" class="nav-link">Servicios</a></li>
+                    <li><a href="/blog" class="nav-link">Blog</a></li>
+                    <li><a href="/contacto" class="btn btn-primary">Solicitar Asesoramiento</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        {{content}}
+    </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col footer-info">
+                    <div class="logo" style="margin-bottom: 1rem;">
+                        <a href="/">
+                            <img src="/images/logo-enlace.png" alt="Enlace Societario" class="footer-logo-img"
+                                style="height: 40px; width: auto; filter: brightness(0) invert(1);">
+                        </a>
+                    </div>
+                    <p>Soluciones legales y contables integrales para empresas en CABA y Provincia de Buenos Aires.
+                        Trayectoria y profesionalismo.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Navegación</h4>
+                    <ul>
+                        <li><a href="/">Inicio</a></li>
+                        <li><a href="/nosotros">Nosotros</a></li>
+                        <li><a href="/servicios">Servicios</a></li>
+                        <li><a href="/blog">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Servicios</h4>
+                    <ul>
+                        <li><a href="/servicios">Constitución de Sociedades</a></li>
+                        <li><a href="/servicios">Reformas Societarias</a></li>
+                        <li><a href="/servicios">Contabilidad</a></li>
+                    </ul>
+                </div>
+                <!-- Contacto & Redes (Merged per instructions to have icons near or below) -->
+                <div class="footer-col">
+                    <h4>Contacto</h4>
+                    <ul style="margin-bottom: 1.5rem;">
+                        <li>
+                            <a href="https://wa.me/549116705489" target="_blank"
+                                style="display: flex; align-items: center; gap: 0.5rem;">
+                                +54 9 11 6780 5489
+                            </a>
+                        </li>
+                        <li>
+                            <a href="mailto:contacto@enlacesocietario.com"
+                                style="display: flex; align-items: center; gap: 0.5rem;">
+                                contacto@enlacesocietario.com
+                            </a>
+                        </li>
+                        <li style="display: flex; align-items: center; gap: 0.5rem;">
+                            Juramento 5034, CABA
+                        </li>
+                    </ul>
+
+                    <div class="social-icons" style="display: flex; gap: 1rem;">
+                        <a href="https://instagram.com/enlacesocietario" target="_blank"
+                            style="color: white; font-size: 1.5rem; transition: all 0.2s ease;">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://linkedin.com/company/enlacesocietario" target="_blank"
+                            style="color: white; font-size: 1.5rem; transition: all 0.2s ease;">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div
+                style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 2rem; text-align: center; font-size: 0.875rem; color: var(--color-text-light);">
+                <p>&copy; {{current_year}} Enlace Societario. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/scripts/main.js"></script>
+</body>
+
+</html>
