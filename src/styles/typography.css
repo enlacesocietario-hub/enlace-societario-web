@@ -55,6 +55,10 @@ a {
     text-align: center;
 }
 
+.text-center p {
+    margin-inline: auto;
+}
+
 .text-primary {
     color: var(--color-primary);
 }
