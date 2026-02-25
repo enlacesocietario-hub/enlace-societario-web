@@ -1,28 +1,45 @@
-<article class="blog-post">
-    <div class="post-hero" style="width: 100%; height: 400px; overflow: hidden; position: relative;">
+<div class="container" style="margin-top: 2rem;">
+    <a href="/blog" class="back-link"
+        style="display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none; color: var(--color-primary); font-weight: 600; font-size: 0.9rem; transition: all 0.2s ease;">
+        <i class="fas fa-arrow-left"></i> Volver al Blog
+    </a>
+</div>
+
+<article class="blog-post" style="padding-bottom: 4rem;">
+    <div class="post-hero"
+        style="width: 100%; height: 450px; overflow: hidden; position: relative; margin-top: 1.5rem;">
         <img src="{{image_url}}" alt="{{title}}" style="width: 100%; height: 100%; object-fit: cover;">
     </div>
 
-    <header class="post-header" style="padding: 3rem 0; background: #f9f9f9; border-bottom: 1px solid #eee; margin-bottom: 3rem;">
-        <div class="container">
-            <span class="category-tag" style="display: inline-block; padding: 0.25rem 0.75rem; background: var(--color-accent); color: white; border-radius: 4px; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; margin-bottom: 1rem;">{{category}}</span>
-            <h1 style="font-size: 3rem; margin-bottom: 1rem; color: var(--color-primary);">{{title}}</h1>
-            <div class="meta" style="color: #666; font-size: 1rem; display: flex; gap: 1rem; align-items: center;">
-                <span class="author">Por {{author_with_link}}</span>
-                <span class="divider">•</span>
+    <header class="post-header"
+        style="padding: 4rem 0 3rem; background: #fff; border-bottom: 1px solid #eee; margin-bottom: 3rem;">
+        <div class="container" style="max-width: 800px;">
+            <span class="category-tag"
+                style="display: inline-block; padding: 0.25rem 0.75rem; background: var(--color-accent); color: white; border-radius: 4px; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; margin-bottom: 1.5rem;">{{category}}</span>
+            <h1 style="font-size: 3.5rem; line-height: 1.2; margin-bottom: 1.5rem; color: var(--color-primary);">
+                {{title}}</h1>
+            <div class="meta" style="color: #777; font-size: 1rem; display: flex; gap: 1rem; align-items: center;">
+                <span class="author">Por <strong>{{author_with_link}}</strong></span>
+                <span class="divider" style="color: #ccc;">|</span>
                 <time datetime="{{date_iso}}">{{date_readable}}</time>
             </div>
         </div>
     </header>
-    
-    <div class="post-content container" style="max-width: 800px; line-height: 1.8; font-size: 1.125rem; color: #333;">
+
+    <div class="post-content container" style="max-width: 800px; line-height: 1.8; font-size: 1.2rem; color: #2c3e50;">
         {{post_body}}
     </div>
 </article>
 
-<section class="cta-section section" style="background: var(--color-primary); color: white; text-align: center; padding: 4rem 0;">
+<section class="cta-section section"
+    style="background: var(--color-primary); color: white; text-align: center; padding: 5rem 0; margin-top: 2rem;">
     <div class="container">
-        <h2 style="color: white; margin-bottom: 2rem;">¿Necesitás asesoramiento sobre este tema?</h2>
-        <a href="/contacto" class="btn btn-primary" style="background: white; color: var(--color-primary);">Solicitar Asesoramiento</a>
+        <h2 style="color: white; margin-bottom: 2.5rem; font-size: 2.5rem;">¿Necesitás asesoramiento sobre este tema?
+        </h2>
+        <a href="/contacto" class="btn btn-primary"
+            style="background: white; color: var(--color-primary); padding: 1rem 2rem; font-size: 1.1rem; border-radius: 50px;">Solicitar
+            Asesoramiento</a>
     </div>
 </section>
+
+<div style="padding-bottom: 5rem;"></div>

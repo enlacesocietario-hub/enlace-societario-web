@@ -60,6 +60,70 @@ function renderLayout(content, meta = {}) {
     return layout;
 }
 
+/**
+ * Formats plain text from Google Sheets into structured HTML.
+ * Handles paragraphs, lists, and headings.
+ */
+function formatContent(text) {
+    if (!text) return '';
+
+    // Simple markdown-to-html for bold
+    let formattedText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+    const lines = formattedText.split(/\r?\n/);
+    let html = '';
+    let currentList = [];
+
+    const closeList = () => {
+        if (currentList.length > 0) {
+            html += `<ul style="margin-bottom: 2rem; padding-left: 1.5rem; list-style-type: disc;">\n${currentList.map(li => `<li style="margin-bottom: 0.75rem;">${li}</li>`).join('\n')}\n</ul>\n`;
+            currentList = [];
+        }
+    };
+
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i].trim();
+
+        if (!line) {
+            // Check if next line is also empty or if we should close the list
+            const nextLine = (lines[i + 1] || '').trim();
+            if (nextLine.startsWith('-') || nextLine.startsWith('•')) {
+                continue; // Keep list open if next line is a list item
+            }
+            closeList();
+            continue;
+        }
+
+        // Detect List Items
+        if (line.startsWith('-') || line.startsWith('•')) {
+            currentList.push(line.substring(1).trim());
+            continue;
+        }
+
+        // If not a list item, close any open list
+        closeList();
+
+        // Detect Headings
+        const isAllCaps = line.length > 5 && line === line.toUpperCase() && !line.match(/[a-z]/);
+        const startsWithEmoji = /^[\u{1F300}-\u{1F9FF}]|^[\u{2600}-\u{26FF}]/u.test(line);
+        const looksLikeHeading = startsWithEmoji && line.length < 100;
+
+        if (line.startsWith('##')) {
+            html += `<h2 style="margin-top: 2.5rem; margin-bottom: 1.25rem; color: var(--color-primary); font-size: 1.75rem; border-bottom: 2px solid var(--color-accent); display: inline-block;">${line.replace(/^##\s*/, '')}</h2>\n`;
+        } else if (line.startsWith('###')) {
+            html += `<h3 style="margin-top: 2rem; margin-bottom: 1rem; color: var(--color-primary); font-size: 1.4rem;">${line.replace(/^###\s*/, '')}</h3>\n`;
+        } else if (isAllCaps || looksLikeHeading) {
+            html += `<h2 style="margin-top: 2.5rem; margin-bottom: 1.25rem; color: var(--color-primary); font-size: 1.75rem;">${line}</h2>\n`;
+        } else {
+            // Standard Paragraph
+            html += `<p style="margin-bottom: 1.5rem; line-height: 1.8;">${line}</p>\n`;
+        }
+    }
+
+    closeList();
+    return html;
+}
+
 // 1. Fetch and process Data
 async function fetchBlogData() {
     console.log('Fetching blog data from Google Sheets...');
@@ -184,7 +248,7 @@ async function build() {
             .replace(/{{author}}/g, post.authorName)
             .replace(/{{date_readable}}/g, dateReadable)
             .replace(/{{date_iso}}/g, dateIso)
-            .replace(/{{post_body}}/g, post.Content)
+            .replace(/{{post_body}}/g, formatContent(post.Content))
             .replace(/{{image_url}}/g, post.imageUrl);
 
         // Add Author Link if exists
@@ -222,18 +286,18 @@ async function build() {
 
         blogListHtml += `
         <article class="card blog-card" style="height: 100%; display: flex; flex-direction: column;">
-            <div class="card-image" style="height: 200px; overflow: hidden; border-radius: 8px 8px 0 0;">
-                <img src="${post.imageUrl}" alt="${post.Title}" style="width: 100%; height: 100%; object-fit: cover;">
+            <div class="card-image" style="height: 160px; overflow: hidden; border-radius: 8px 8px 0 0;">
+                <img src="${post.imageUrl}" alt="${post.Title}" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease;">
             </div>
-            <div class="card-content" style="padding: 1.5rem; flex-grow: 1; display: flex; flex-direction: column;">
-                <div style="margin-bottom: 0.5rem;">
-                    <span class="category-tag" style="font-size: 0.75rem; font-weight: 700; color: var(--color-accent); text-transform: uppercase;">${post.categoryName}</span>
+            <div class="card-content" style="padding: 1rem 1.25rem; flex-grow: 1; display: flex; flex-direction: column;">
+                <div style="margin-bottom: 0.25rem;">
+                    <span class="category-tag" style="font-size: 0.65rem; font-weight: 800; color: var(--color-accent); text-transform: uppercase; letter-spacing: 0.05em;">${post.categoryName}</span>
                 </div>
-                <h3 style="margin-bottom: 1rem; font-size: 1.25rem;"><a href="/blog/${post.Slug}" style="text-decoration: none; color: inherit;">${post.Title}</a></h3>
-                <p style="font-size: 0.9rem; color: #666; margin-bottom: 1.5rem;">${excerpt}</p>
-                <div style="margin-top: auto; display: flex; align-items: center; justify-content: space-between; font-size: 0.8rem; color: #888;">
-                    <span>Por ${post.authorName}</span>
-                    <time>${dateReadable}</time>
+                <h3 style="margin-bottom: 0.5rem; font-size: 1.1rem; line-height: 1.25; font-weight: 700;"><a href="/blog/${post.Slug}" style="text-decoration: none; color: inherit; transition: color 0.2s ease;">${post.Title}</a></h3>
+                <p style="font-size: 0.8rem; color: #555; margin-bottom: 1rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.5;">${excerpt}</p>
+                <div style="margin-top: auto; display: flex; align-items: center; justify-content: space-between; font-size: 0.7rem; color: #999; border-top: 1px solid #f0f0f0; padding-top: 0.75rem;">
+                    <span style="display: flex; align-items: center; gap: 0.25rem;"><i class="fas fa-user-edit" style="font-size: 0.6rem;"></i> ${post.authorName}</span>
+                    <span><i class="far fa-calendar-alt" style="font-size: 0.6rem;"></i> ${dateReadable}</span>
                 </div>
             </div>
         </article>`;
