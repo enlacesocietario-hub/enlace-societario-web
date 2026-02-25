@@ -1,22 +1,28 @@
 <article class="blog-post">
-    <header class="post-header">
+    <div class="post-hero" style="width: 100%; height: 400px; overflow: hidden; position: relative;">
+        <img src="{{image_url}}" alt="{{title}}" style="width: 100%; height: 100%; object-fit: cover;">
+    </div>
+
+    <header class="post-header" style="padding: 3rem 0; background: #f9f9f9; border-bottom: 1px solid #eee; margin-bottom: 3rem;">
         <div class="container">
-            <span class="category">{{category}}</span>
-            <h1>{{title}}</h1>
-            <div class="meta">
-                <span class="author">Por {{author}}</span> • <time datetime="{{date_iso}}">{{date_readable}}</time>
+            <span class="category-tag" style="display: inline-block; padding: 0.25rem 0.75rem; background: var(--color-accent); color: white; border-radius: 4px; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; margin-bottom: 1rem;">{{category}}</span>
+            <h1 style="font-size: 3rem; margin-bottom: 1rem; color: var(--color-primary);">{{title}}</h1>
+            <div class="meta" style="color: #666; font-size: 1rem; display: flex; gap: 1rem; align-items: center;">
+                <span class="author">Por {{author_with_link}}</span>
+                <span class="divider">•</span>
+                <time datetime="{{date_iso}}">{{date_readable}}</time>
             </div>
         </div>
     </header>
     
-    <div class="post-content container">
+    <div class="post-content container" style="max-width: 800px; line-height: 1.8; font-size: 1.125rem; color: #333;">
         {{post_body}}
     </div>
 </article>
 
-<section class="cta-section section">
+<section class="cta-section section" style="background: var(--color-primary); color: white; text-align: center; padding: 4rem 0;">
     <div class="container">
-        <h2>¿Necesitás asesoramiento sobre este tema?</h2>
-        <a href="#contacto" class="btn">Solicitar Asesoramiento</a>
+        <h2 style="color: white; margin-bottom: 2rem;">¿Necesitás asesoramiento sobre este tema?</h2>
+        <a href="/contacto" class="btn btn-primary" style="background: white; color: var(--color-primary);">Solicitar Asesoramiento</a>
     </div>
 </section>
