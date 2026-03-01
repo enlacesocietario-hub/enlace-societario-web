@@ -62,8 +62,49 @@
 }
 
 .card:hover {
-    transform: translateY(-4px);
+    transform: translateY(-8px);
     box-shadow: var(--shadow-lg);
+}
+
+/* --- Blog Specific --- */
+.blog-card {
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.blog-card .card-image img {
+    transition: transform 0.5s ease;
+}
+
+.blog-card:hover .card-image img {
+    transform: scale(1.05);
+}
+
+/* --- Utilities --- */
+.stretched-link::after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    content: "";
+}
+
+.keyword-badge {
+    display: inline-block;
+    padding: 0.4rem 0.8rem;
+    background-color: #f0f4f8;
+    color: var(--color-primary-light);
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    border: 1px solid #dce3eb;
+    transition: all 0.2s ease;
+}
+
+.keyword-badge:hover {
+    background-color: var(--color-primary-light);
+    color: white;
 }
 
 /* --- Forms --- */

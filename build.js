@@ -108,7 +108,14 @@ function formatContent(text) {
         const startsWithEmoji = /^[\u{1F300}-\u{1F9FF}]|^[\u{2600}-\u{26FF}]/u.test(line);
         const looksLikeHeading = startsWithEmoji && line.length < 100;
 
-        if (line.startsWith('##')) {
+        // Detect CTA (Refined logic)
+        const ctaKeywords = ["Solicitá asesoramiento", "Solicitar asesoramiento", "Asesoramiento personalizado"];
+        const isShortLine = line.length < 60;
+        const isCTA = isShortLine && ctaKeywords.some(k => line.toLowerCase().includes(k.toLowerCase()));
+
+        if (isCTA) {
+            html += `<div style="margin: 2.5rem 0; text-align: center;">\n<a href="/contacto" class="btn btn-primary" style="padding: 1rem 2rem; border-radius: 50px; text-transform: none; font-size: 1.1rem;">${line}</a>\n</div>\n`;
+        } else if (line.startsWith('##')) {
             html += `<h2 style="margin-top: 2.5rem; margin-bottom: 1.25rem; color: var(--color-primary); font-size: 1.75rem; border-bottom: 2px solid var(--color-accent); display: inline-block;">${line.replace(/^##\s*/, '')}</h2>\n`;
         } else if (line.startsWith('###')) {
             html += `<h3 style="margin-top: 2rem; margin-bottom: 1rem; color: var(--color-primary); font-size: 1.4rem;">${line.replace(/^###\s*/, '')}</h3>\n`;
@@ -171,7 +178,8 @@ async function fetchBlogData() {
                     authorLinkedin: author.author_linkedin_url || author.linkedin_url || '',
                     imageUrl: getPostImageUrl(post),
                     metaTitle,
-                    metaDescription
+                    metaDescription,
+                    keywords: post.Keywords || ''
                 };
             })
             // Sort by Date descending
@@ -251,6 +259,21 @@ async function build() {
             .replace(/{{post_body}}/g, formatContent(post.Content))
             .replace(/{{image_url}}/g, post.imageUrl);
 
+        // Keywords badges
+        let keywordsHtml = '';
+        if (post.keywords) {
+            const keys = post.keywords.split(/,|\r?\n/).map(k => k.trim()).filter(k => k !== '');
+            if (keys.length > 0) {
+                keywordsHtml = '<div class="post-keywords" style="margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid #eee; display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center;">';
+                keywordsHtml += '<span style="font-size: 0.85rem; color: #777; margin-right: 0.5rem; font-weight: 600;">Etiquetas:</span>';
+                keys.forEach(key => {
+                    keywordsHtml += `<span class="keyword-badge">${key}</span>`;
+                });
+                keywordsHtml += '</div>';
+            }
+        }
+        postTemplate = postTemplate.replace(/{{keywords_html}}/g, keywordsHtml);
+
         // Add Author Link if exists
         const authorLinkHtml = post.authorLinkedin
             ? `<a href="${post.authorLinkedin}" target="_blank" class="author-link">${post.authorName}</a>`
@@ -285,7 +308,7 @@ async function build() {
         const excerpt = post.Content.replace(/<[^>]*>/g, '').substring(0, 120).trim() + '...';
 
         blogListHtml += `
-        <article class="card blog-card" style="height: 100%; display: flex; flex-direction: column;">
+        <article class="card blog-card" style="height: 100%; display: flex; flex-direction: column; position: relative;">
             <div class="card-image" style="height: 160px; overflow: hidden; border-radius: 8px 8px 0 0;">
                 <img src="${post.imageUrl}" alt="${post.Title}" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease;">
             </div>
@@ -293,7 +316,9 @@ async function build() {
                 <div style="margin-bottom: 0.25rem;">
                     <span class="category-tag" style="font-size: 0.65rem; font-weight: 800; color: var(--color-accent); text-transform: uppercase; letter-spacing: 0.05em;">${post.categoryName}</span>
                 </div>
-                <h3 style="margin-bottom: 0.5rem; font-size: 1.1rem; line-height: 1.25; font-weight: 700;"><a href="/blog/${post.Slug}" style="text-decoration: none; color: inherit; transition: color 0.2s ease;">${post.Title}</a></h3>
+                <h3 style="margin-bottom: 0.5rem; font-size: 1.1rem; line-height: 1.25; font-weight: 700;">
+                    <a href="/blog/${post.Slug}" class="stretched-link" style="text-decoration: none; color: inherit; transition: color 0.2s ease;">${post.Title}</a>
+                </h3>
                 <p style="font-size: 0.8rem; color: #555; margin-bottom: 1rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.5;">${excerpt}</p>
                 <div style="margin-top: auto; display: flex; align-items: center; justify-content: space-between; font-size: 0.7rem; color: #999; border-top: 1px solid #f0f0f0; padding-top: 0.75rem;">
                     <span style="display: flex; align-items: center; gap: 0.25rem;"><i class="fas fa-user-edit" style="font-size: 0.6rem;"></i> ${post.authorName}</span>
