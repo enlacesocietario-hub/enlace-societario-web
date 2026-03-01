@@ -37,15 +37,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const body = document.body;
 
     if (mobileMenuToggle && mobileMenu) {
-        mobileMenuToggle.addEventListener('click', () => {
+        mobileMenuToggle.addEventListener('click', (e) => {
+            e.preventDefault();
             mobileMenu.classList.add('is-open');
-            body.style.overflow = 'hidden'; // Prevent scroll
+            body.style.overflow = 'hidden';
         });
 
-        mobileMenuClose.addEventListener('click', () => {
-            mobileMenu.classList.remove('is-open');
-            body.style.overflow = '';
-        });
+        if (mobileMenuClose) {
+            mobileMenuClose.addEventListener('click', (e) => {
+                e.preventDefault();
+                mobileMenu.classList.remove('is-open');
+                body.style.overflow = '';
+            });
+        }
 
         // Close on link click
         const mobileLinks = mobileMenu.querySelectorAll('a');
