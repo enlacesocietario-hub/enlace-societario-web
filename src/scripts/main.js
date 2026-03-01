@@ -38,12 +38,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (mobileMenuToggle && mobileMenu) {
         mobileMenuToggle.addEventListener('click', () => {
-            mobileMenu.classList.add('active');
+            mobileMenu.classList.add('is-open');
             body.style.overflow = 'hidden'; // Prevent scroll
         });
 
         mobileMenuClose.addEventListener('click', () => {
-            mobileMenu.classList.remove('active');
+            mobileMenu.classList.remove('is-open');
             body.style.overflow = '';
         });
 
@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const mobileLinks = mobileMenu.querySelectorAll('a');
         mobileLinks.forEach(link => {
             link.addEventListener('click', () => {
-                mobileMenu.classList.remove('active');
+                mobileMenu.classList.remove('is-open');
                 body.style.overflow = '';
             });
         });
@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Close on backdrop click
         mobileMenu.addEventListener('click', (e) => {
             if (e.target === mobileMenu) {
-                mobileMenu.classList.remove('active');
+                mobileMenu.classList.remove('is-open');
                 body.style.overflow = '';
             }
         });
