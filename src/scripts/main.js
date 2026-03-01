@@ -29,4 +29,39 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Future: Form validation logic here
+
+    /* --- Mobile Menu --- */
+    const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+    const mobileMenuClose = document.querySelector('.mobile-menu-close');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const body = document.body;
+
+    if (mobileMenuToggle && mobileMenu) {
+        mobileMenuToggle.addEventListener('click', () => {
+            mobileMenu.classList.add('active');
+            body.style.overflow = 'hidden'; // Prevent scroll
+        });
+
+        mobileMenuClose.addEventListener('click', () => {
+            mobileMenu.classList.remove('active');
+            body.style.overflow = '';
+        });
+
+        // Close on link click
+        const mobileLinks = mobileMenu.querySelectorAll('a');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('active');
+                body.style.overflow = '';
+            });
+        });
+
+        // Close on backdrop click
+        mobileMenu.addEventListener('click', (e) => {
+            if (e.target === mobileMenu) {
+                mobileMenu.classList.remove('active');
+                body.style.overflow = '';
+            }
+        });
+    }
 });

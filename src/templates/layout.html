@@ -31,16 +31,42 @@
                 </a>
             </div>
             <nav class="main-nav">
-                <ul>
+                <ul class="nav-links">
                     <li><a href="/" class="nav-link">INICIO</a></li>
                     <li><a href="/nosotros" class="nav-link">Nosotros</a></li>
                     <li><a href="/servicios" class="nav-link">Servicios</a></li>
                     <li><a href="/blog" class="nav-link">Blog</a></li>
                     <li><a href="/contacto" class="btn btn-primary">Solicitar Asesoramiento</a></li>
                 </ul>
+                <button class="mobile-menu-toggle" aria-label="Abrir menú">
+                    <i class="fas fa-bars"></i>
+                </button>
             </nav>
         </div>
     </header>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay" id="mobileMenu">
+        <div class="mobile-menu-header">
+            <div class="logo">
+                <img src="/images/logo-enlace.png" alt="Enlace Societario" style="height: 60px; width: auto;">
+            </div>
+            <button class="mobile-menu-close" aria-label="Cerrar menú">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <nav class="mobile-nav">
+            <ul>
+                <li><a href="/">INICIO</a></li>
+                <li><a href="/nosotros">NOSOTROS</a></li>
+                <li><a href="/servicios">SERVICIOS</a></li>
+                <li><a href="/blog">BLOG</a></li>
+                <li style="margin-top: 2rem;">
+                    <a href="/contacto" class="btn btn-primary" style="width: 100%;">Solicitar Asesoramiento</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
 
     <main>
         {{content}}
