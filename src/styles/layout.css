@@ -278,11 +278,12 @@
         width: 100%;
         height: 100%;
         background: white;
-        z-index: 2000;
+        z-index: 9999;
+        /* Higher than header */
         transition: left 0.3s ease;
         padding: 2rem;
         display: none;
-        /* Hidden by default */
+        /* Controlled by .is-open */
         flex-direction: column;
     }
 
@@ -303,6 +304,7 @@
         border: none;
         font-size: 2rem;
         color: var(--color-primary);
+        cursor: pointer;
     }
 
     .mobile-nav ul {
@@ -323,10 +325,32 @@
     }
 }
 
-/* --- Global Hiding for Mobile-only elements --- */
-.mobile-menu-toggle,
-.mobile-menu-overlay {
-    display: none;
+/* --- Navigation & Header Fixes --- */
+.main-header {
+    z-index: 1000;
+    position: relative;
+}
+
+/* Desktop: Hide mobile-only elements */
+@media (min-width: 769px) {
+
+    .mobile-menu-toggle,
+    .mobile-menu-overlay {
+        display: none !important;
+    }
+}
+
+/* Mobile: Initialize toggle state */
+@media (max-width: 768px) {
+    .mobile-menu-toggle {
+        display: block !important;
+        background: none;
+        border: none;
+        color: var(--color-primary);
+        font-size: 1.75rem;
+        cursor: pointer;
+        padding: 0.5rem;
+    }
 }
 
 /* --- REFINE: Hero Background --- */
