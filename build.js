@@ -71,6 +71,7 @@ function renderLayout(content, meta = {}) {
     layout = layout.replace(/{{og_type}}/g, ogType);
     layout = layout.replace(/{{og_article_meta}}/g, ogArticleMeta);
     layout = layout.replace(/{{schema_json}}/g, meta.schema || '');
+    layout = layout.replace(/{{extra_meta}}/g, meta.extraMeta || '');
     layout = layout.replace(/{{current_year}}/g, new Date().getFullYear());
 
     return layout;
@@ -267,6 +268,13 @@ async function build() {
             description: 'Comunicate con nuestro equipo para recibir asesoramiento personalizado en trámites societarios y contables. Soluciones rápidas y profesionales.',
             priority: '0.8',
             changefreq: 'monthly'
+        },
+        '404.html': {
+            title: 'Error 404 | Enlace Societario',
+            description: 'La página que estás buscando no existe o fue modificada.',
+            priority: '0.1',
+            changefreq: 'monthly',
+            noindex: true
         }
     };
 
@@ -282,7 +290,8 @@ async function build() {
         const html = renderLayout(template, {
             title: info.title,
             description: info.description,
-            canonical: canonical
+            canonical: canonical,
+            extraMeta: info.noindex ? '<meta name="robots" content="noindex, follow">' : ''
         });
 
         const outputPath = page === 'index.html'
