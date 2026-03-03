@@ -1,12 +1,28 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es-AR">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{meta_title}} | Enlace Societario</title>
+    <meta http-equiv="content-language" content="es-AR">
+    <title>{{meta_title}}</title>
     <meta name="description" content="{{meta_description}}">
+    <meta name="author" content="{{meta_author}}">
+    <meta name="publisher" content="Enlace Societario">
     <link rel="canonical" href="{{canonical_url}}">
+    <link rel="alternate" hreflang="es-AR" href="{{canonical_url}}">
+    <link rel="alternate" hreflang="x-default" href="{{canonical_url}}">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="{{meta_title}}">
+    <meta property="og:description" content="{{meta_description}}">
+    <meta property="og:image" content="{{og_image}}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:url" content="{{canonical_url}}">
+    <meta property="og:type" content="{{og_type}}">
+    <meta property="og:site_name" content="Enlace Societario">
+    {{og_article_meta}}
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,6 +35,29 @@
     <link rel="stylesheet" href="/styles/global.css">
 
     <!-- Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LegalService",
+      "@id": "https://enlacesocietario.com/#legalservice",
+      "name": "Enlace Societario",
+      "url": "https://enlacesocietario.com",
+      "logo": "https://enlacesocietario.com/images/logo-enlace.png",
+      "image": "https://enlacesocietario.com/images/hero-bg.webp",
+      "areaServed": "Argentina",
+      "serviceType": "Derecho societario y servicios contables",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Juramento 5034",
+        "addressLocality": "CABA",
+        "addressCountry": "AR"
+      },
+      "sameAs": [
+        "https://instagram.com/enlacesocietario",
+        "https://linkedin.com/company/enlacesocietario"
+      ]
+    }
+    </script>
     {{schema_json}}
 </head>
 
@@ -32,11 +71,14 @@
             </div>
             <nav class="main-nav">
                 <ul class="nav-links">
-                    <li><a href="/" class="nav-link">INICIO</a></li>
-                    <li><a href="/nosotros" class="nav-link">Nosotros</a></li>
-                    <li><a href="/servicios" class="nav-link">Servicios</a></li>
-                    <li><a href="/blog" class="nav-link">Blog</a></li>
-                    <li><a href="/contacto" class="btn btn-primary">Solicitar Asesoramiento</a></li>
+                    <li><a href="/" class="nav-link" title="Ir al inicio">INICIO</a></li>
+                    <li><a href="/nosotros" class="nav-link" title="Conocé nuestro equipo y trayectoria">Nosotros</a>
+                    </li>
+                    <li><a href="/servicios" class="nav-link" title="Servicios societarios y contables">Servicios</a>
+                    </li>
+                    <li><a href="/blog" class="nav-link" title="Actualidad y novedades societarias">Blog</a></li>
+                    <li><a href="/contacto" class="btn btn-primary"
+                            title="Solicitar asesoramiento personalizado">Solicitar Asesoramiento</a></li>
                 </ul>
                 <button class="mobile-menu-toggle" aria-label="Abrir menú">
                     <i class="fas fa-bars"></i>
@@ -57,12 +99,13 @@
         </div>
         <nav class="mobile-nav">
             <ul>
-                <li><a href="/">INICIO</a></li>
-                <li><a href="/nosotros">NOSOTROS</a></li>
-                <li><a href="/servicios">SERVICIOS</a></li>
-                <li><a href="/blog">BLOG</a></li>
+                <li><a href="/" title="Ir al inicio">INICIO</a></li>
+                <li><a href="/nosotros" title="Conocé nuestro equipo y trayectoria">NOSOTROS</a></li>
+                <li><a href="/servicios" title="Servicios societarios y contables">SERVICIOS</a></li>
+                <li><a href="/blog" title="Actualidad y novedades societarias">BLOG</a></li>
                 <li style="margin-top: 2rem;">
-                    <a href="/contacto" class="btn btn-primary" style="width: 100%;">Solicitar Asesoramiento</a>
+                    <a href="/contacto" class="btn btn-primary" style="width: 100%;"
+                        title="Solicitar asesoramiento personalizado">Solicitar Asesoramiento</a>
                 </li>
             </ul>
         </nav>
@@ -88,18 +131,20 @@
                 <div class="footer-col">
                     <h4>Navegación</h4>
                     <ul>
-                        <li><a href="/">Inicio</a></li>
-                        <li><a href="/nosotros">Nosotros</a></li>
-                        <li><a href="/servicios">Servicios</a></li>
-                        <li><a href="/blog">Blog</a></li>
+                        <li><a href="/" title="Ir al inicio">Inicio</a></li>
+                        <li><a href="/nosotros" title="Conocé nuestro equipo">Nosotros</a></li>
+                        <li><a href="/servicios" title="Servicios para empresas">Servicios</a></li>
+                        <li><a href="/blog" title="Blog de actualidad">Blog</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">
                     <h4>Servicios</h4>
                     <ul>
-                        <li><a href="/servicios">Constitución de Sociedades</a></li>
-                        <li><a href="/servicios">Reformas Societarias</a></li>
-                        <li><a href="/servicios">Contabilidad</a></li>
+                        <li><a href="/servicios" title="Constitución de SAS, SRL y SA">Constitución de Sociedades</a>
+                        </li>
+                        <li><a href="/servicios" title="Reformas y actualizaciones societarias">Reformas Societarias</a>
+                        </li>
+                        <li><a href="/servicios" title="Asesoramiento contable e impositivo">Contabilidad</a></li>
                     </ul>
                 </div>
                 <!-- Contacto & Redes (Merged per instructions to have icons near or below) -->

@@ -51,12 +51,28 @@ function readTemplate(name) {
 // Helper: Render Layout
 function renderLayout(content, meta = {}) {
     let layout = readTemplate('layout.html');
-    layout = layout.replace('{{content}}', content);
-    layout = layout.replace('{{meta_title}}', meta.title || 'Enlace Societario');
-    layout = layout.replace('{{meta_description}}', meta.description || 'Estudio contable especializado en trámites societarios en Argentina.');
-    layout = layout.replace('{{canonical_url}}', meta.canonical || 'https://enlacesocietario.com');
-    layout = layout.replace('{{schema_json}}', meta.schema || '');
+
+    // Default Fallbacks
+    const domain = 'https://enlacesocietario.com';
+    const title = meta.title || 'Constitución de Sociedades en Argentina | Enlace Societario';
+    const description = meta.description || 'Especialistas en constitución, reforma y regularización de sociedades en Argentina. Asesoramiento legal y contable con más de 20 años de experiencia.';
+    const canonical = meta.canonical || domain;
+    const ogImage = meta.image ? (meta.image.startsWith('http') ? meta.image : `${domain}${meta.image}`) : `${domain}/images/hero-bg.webp`;
+    const ogType = meta.type || 'website';
+    const author = meta.author || 'Enlace Societario';
+    const ogArticleMeta = meta.articleMeta || '';
+
+    layout = layout.replace(/{{content}}/g, content);
+    layout = layout.replace(/{{meta_title}}/g, title);
+    layout = layout.replace(/{{meta_description}}/g, description);
+    layout = layout.replace(/{{meta_author}}/g, author);
+    layout = layout.replace(/{{canonical_url}}/g, canonical);
+    layout = layout.replace(/{{og_image}}/g, ogImage);
+    layout = layout.replace(/{{og_type}}/g, ogType);
+    layout = layout.replace(/{{og_article_meta}}/g, ogArticleMeta);
+    layout = layout.replace(/{{schema_json}}/g, meta.schema || '');
     layout = layout.replace(/{{current_year}}/g, new Date().getFullYear());
+
     return layout;
 }
 
@@ -114,7 +130,7 @@ function formatContent(text) {
         const isCTA = isShortLine && ctaKeywords.some(k => line.toLowerCase().includes(k.toLowerCase()));
 
         if (isCTA) {
-            html += `<div style="margin: 2.5rem 0; text-align: center;">\n<a href="/contacto" class="btn btn-primary" style="padding: 1rem 2rem; border-radius: 50px; text-transform: none; font-size: 1.1rem;">${line}</a>\n</div>\n`;
+            html += `<div style="margin: 2.5rem 0; text-align: center;">\n<a href="/contacto" class="btn btn-primary" title="Solicitar asesoramiento personalizado" style="padding: 1rem 2rem; border-radius: 50px; text-transform: none; font-size: 1.1rem;">${line}</a>\n</div>\n`;
         } else if (line.startsWith('##')) {
             html += `<h2 style="margin-top: 2.5rem; margin-bottom: 1.25rem; color: var(--color-primary); font-size: 1.75rem; border-bottom: 2px solid var(--color-accent); display: inline-block;">${line.replace(/^##\s*/, '')}</h2>\n`;
         } else if (line.startsWith('###')) {
@@ -162,12 +178,19 @@ async function fetchBlogData() {
                 const categoryName = categoriesMap[post.Category] || post.Category;
                 const author = authorsMap[post.Author] || { name: post.Author };
 
-                // SEO Metadata
-                const metaTitle = post['Meta Title'] || post.Title;
+                // SEO Metadata logic
+                let metaTitle = post['Meta Title'];
+                if (!metaTitle) {
+                    metaTitle = `${post.Title} | Blog Enlace Societario`;
+                }
+
                 let metaDescription = post['Meta Description'];
                 if (!metaDescription && post.Content) {
-                    // Simple strip tags and truncate
-                    metaDescription = post.Content.replace(/<[^>]*>/g, '').substring(0, 160).trim() + '...';
+                    // Simple strip tags and truncate (~150 chars)
+                    metaDescription = post.Content.replace(/<[^>]*>/g, '').substring(0, 150).trim();
+                    const lastSpace = metaDescription.lastIndexOf(' ');
+                    if (lastSpace > 120) metaDescription = metaDescription.substring(0, lastSpace);
+                    metaDescription += '...';
                 }
 
                 return {
@@ -200,6 +223,9 @@ async function fetchBlogData() {
 async function build() {
     console.log('Starting build...');
 
+    const DOMAIN = 'https://enlacesocietario.com';
+    const sitemapEntries = [];
+
     // Clean/Ensure Output Dir
     if (fs.existsSync(CONFIG.outputDir)) {
         fs.rmSync(CONFIG.outputDir, { recursive: true, force: true });
@@ -216,24 +242,62 @@ async function build() {
         copyDir(CONFIG.publicDir, CONFIG.outputDir);
     }
 
-    // Static Pages
-    const pages = ['index.html', 'nosotros.html', 'servicios.html', 'contacto.html'];
-    pages.forEach(page => {
+    // Static Pages Meta Definitions
+    const staticPages = {
+        'index.html': {
+            title: 'Constitución de Sociedades en Argentina | Enlace Societario',
+            description: 'Especialistas en constitución, reforma y regularización de sociedades en Argentina. Asesoramiento legal y contable con más de 20 años de experiencia.',
+            priority: '1.0',
+            changefreq: 'daily'
+        },
+        'servicios.html': {
+            title: 'Servicios Societarios y Contables en Argentina | Enlace',
+            description: 'Constitución de SRL y SA, reformas societarias, resolución de conflictos y servicios contables. Soluciones legales claras y eficientes.',
+            priority: '0.9',
+            changefreq: 'monthly'
+        },
+        'nosotros.html': {
+            title: 'Estudio Especialista en Derecho Societario | Enlace',
+            description: 'Más de 20 años asesorando empresas en Argentina. Equipo profesional enfocado en seguridad jurídica y soluciones eficientes.',
+            priority: '0.8',
+            changefreq: 'monthly'
+        },
+        'contacto.html': {
+            title: 'Contacto para Asesoramiento Societario en Argentina | Enlace',
+            description: 'Comunicate con nuestro equipo para recibir asesoramiento personalizado en trámites societarios y contables. Soluciones rápidas y profesionales.',
+            priority: '0.8',
+            changefreq: 'monthly'
+        }
+    };
+
+    // Build Static Pages
+    Object.keys(staticPages).forEach(page => {
         const template = readTemplate(page);
         if (!template) return;
 
+        const info = staticPages[page];
+        const slug = page === 'index.html' ? '' : page.replace('.html', '');
+        const canonical = `${DOMAIN}${slug ? '/' + slug : '/'}`;
+
         const html = renderLayout(template, {
-            title: page === 'index.html' ? '' : page.replace('.html', '').charAt(0).toUpperCase() + page.replace('.html', '').slice(1),
-            canonical: `https://enlacesocietario.com/${page === 'index.html' ? '' : page.replace('.html', '')}`
+            title: info.title,
+            description: info.description,
+            canonical: canonical
         });
 
         const outputPath = page === 'index.html'
             ? path.join(CONFIG.outputDir, 'index.html')
-            : path.join(CONFIG.outputDir, page.replace('.html', ''), 'index.html');
+            : path.join(CONFIG.outputDir, slug, 'index.html');
 
         ensureDir(path.dirname(outputPath));
         fs.writeFileSync(outputPath, html);
         console.log(`Generated: ${outputPath}`);
+
+        sitemapEntries.push({
+            loc: canonical,
+            priority: info.priority,
+            changefreq: info.changefreq
+        });
     });
 
     // Blog Pages
@@ -248,16 +312,18 @@ async function build() {
         // Date formatting
         const dateObj = new Date(post.Date);
         const dateReadable = dateObj.toLocaleDateString('es-AR', { day: 'numeric', month: 'long', year: 'numeric' });
-        const dateIso = dateObj.toISOString().split('T')[0];
+        const dateIso = dateObj.toISOString(); // Full ISO for schema
+        const dateSimpleIso = dateIso.split('T')[0];
 
         postTemplate = postTemplate
             .replace(/{{title}}/g, post.Title)
             .replace(/{{category}}/g, post.categoryName)
             .replace(/{{author}}/g, post.authorName)
             .replace(/{{date_readable}}/g, dateReadable)
-            .replace(/{{date_iso}}/g, dateIso)
+            .replace(/{{date_iso}}/g, dateSimpleIso)
             .replace(/{{post_body}}/g, formatContent(post.Content))
-            .replace(/{{image_url}}/g, post.imageUrl);
+            .replace(/{{image_url}}/g, post.imageUrl)
+            .replace(/{{post_title}}/g, post.Title); // For ALT tags
 
         // Keywords badges
         let keywordsHtml = '';
@@ -274,29 +340,52 @@ async function build() {
         }
         postTemplate = postTemplate.replace(/{{keywords_html}}/g, keywordsHtml);
 
-        // Add Author Link if exists
+        // Author Link
         const authorLinkHtml = post.authorLinkedin
-            ? `<a href="${post.authorLinkedin}" target="_blank" class="author-link">${post.authorName}</a>`
+            ? `<a href="${post.authorLinkedin}" target="_blank" class="author-link" title="Ver perfil de ${post.authorName}">${post.authorName}</a>`
             : post.authorName;
         postTemplate = postTemplate.replace(/{{author_with_link}}/g, authorLinkHtml);
+
+        const canonical = `${DOMAIN}/blog/${post.Slug}`;
+        const imageUrlAbs = post.imageUrl.startsWith('http') ? post.imageUrl : `${DOMAIN}${post.imageUrl}`;
 
         const postHtml = renderLayout(postTemplate, {
             title: post.metaTitle,
             description: post.metaDescription,
-            canonical: `https://enlacesocietario.com/blog/${post.Slug}`,
-            schema: `<script type="application/ld+json">
-            {
-              "@context": "https://schema.org",
-              "@type": "Article",
-              "headline": "${post.Title}",
-              "image": "https://enlacesocietario.com${post.imageUrl}",
-              "author": {
-                "@type": "Person",
-                "name": "${post.authorName}"
-              },
-              "datePublished": "${dateIso}"
-            }
-            </script>`
+            canonical: canonical,
+            image: post.imageUrl,
+            type: 'article',
+            author: post.authorName,
+            articleMeta: `
+    <meta property="article:published_time" content="${dateIso}">
+    <meta property="article:author" content="${post.authorName}">`,
+            schema: `
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "${canonical}"
+      },
+      "headline": "${post.Title.replace(/"/g, '\\"')}",
+      "description": "${post.metaDescription.replace(/"/g, '\\"')}",
+      "image": "${imageUrlAbs}",
+      "author": {
+        "@type": "Person",
+        "name": "${post.authorName}"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Enlace Societario",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "${DOMAIN}/images/logo-enlace.png"
+        }
+      },
+      "datePublished": "${dateIso}"
+    }
+    </script>`
         });
 
         const postPath = path.join(CONFIG.outputDir, 'blog', post.Slug);
@@ -304,20 +393,27 @@ async function build() {
         fs.writeFileSync(path.join(postPath, 'index.html'), postHtml);
         console.log(`Generated Post: ${post.Slug}`);
 
+        sitemapEntries.push({
+            loc: canonical,
+            priority: '0.7',
+            changefreq: 'weekly',
+            lastmod: dateSimpleIso
+        });
+
         // Add to list grid
         const excerpt = post.Content.replace(/<[^>]*>/g, '').substring(0, 120).trim() + '...';
 
         blogListHtml += `
         <article class="card blog-card" style="height: 100%; display: flex; flex-direction: column; position: relative;">
             <div class="card-image" style="height: 160px; overflow: hidden; border-radius: 8px 8px 0 0;">
-                <img src="${post.imageUrl}" alt="${post.Title}" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease;">
+                <img src="${post.imageUrl}" alt="${post.Title} - Enlace Societario" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease;">
             </div>
             <div class="card-content" style="padding: 1rem 1.25rem; flex-grow: 1; display: flex; flex-direction: column;">
                 <div style="margin-bottom: 0.25rem;">
                     <span class="category-tag" style="font-size: 0.65rem; font-weight: 800; color: var(--color-accent); text-transform: uppercase; letter-spacing: 0.05em;">${post.categoryName}</span>
                 </div>
                 <h3 style="margin-bottom: 0.5rem; font-size: 1.1rem; line-height: 1.25; font-weight: 700;">
-                    <a href="/blog/${post.Slug}" class="stretched-link" style="text-decoration: none; color: inherit; transition: color 0.2s ease;">${post.Title}</a>
+                    <a href="/blog/${post.Slug}" class="stretched-link" title="Leer: ${post.Title}" style="text-decoration: none; color: inherit; transition: color 0.2s ease;">${post.Title}</a>
                 </h3>
                 <p style="font-size: 0.8rem; color: #555; margin-bottom: 1rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.5;">${excerpt}</p>
                 <div style="margin-top: auto; display: flex; align-items: center; justify-content: space-between; font-size: 0.7rem; color: #999; border-top: 1px solid #f0f0f0; padding-top: 0.75rem;">
@@ -332,16 +428,76 @@ async function build() {
     let blogListTemplate = readTemplate('blog-list.html');
     if (blogListTemplate) {
         blogListTemplate = blogListTemplate.replace('{{blog_items}}', blogListHtml);
+        const canonical = `${DOMAIN}/blog`;
         const blogIndexHtml = renderLayout(blogListTemplate, {
-            title: 'Blog de Actualidad Societaria',
-            description: 'Todo lo que necesitas saber para crear y gestionar una sociedad en Argentina. Información clara y actualizada.',
-            canonical: 'https://enlacesocietario.com/blog'
+            title: 'Actualidad Societaria en Argentina | Blog Enlace',
+            description: 'Guías prácticas y novedades sobre constitución de sociedades, reformas y normativa societaria en Argentina.',
+            canonical: canonical
         });
 
         ensureDir(path.join(CONFIG.outputDir, 'blog'));
         fs.writeFileSync(path.join(CONFIG.outputDir, 'blog', 'index.html'), blogIndexHtml);
         console.log('Generated: Blog Index');
+
+        sitemapEntries.push({
+            loc: canonical,
+            priority: '0.9',
+            changefreq: 'monthly'
+        });
     }
+
+    // Generate Sitemap
+    const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${sitemapEntries.map(entry => `    <url>
+        <loc>${entry.loc}</loc>
+        <changefreq>${entry.changefreq}</changefreq>
+        <priority>${entry.priority}</priority>${entry.lastmod ? `\n        <lastmod>${entry.lastmod}</lastmod>` : ''}
+    </url>`).join('\n')}
+</urlset>`;
+    fs.writeFileSync(path.join(CONFIG.outputDir, 'sitemap.xml'), sitemapXml);
+    console.log('Generated: sitemap.xml');
+
+    // Generate robots.txt
+    const robotsTxt = `User-agent: *
+Allow: /
+
+Sitemap: ${DOMAIN}/sitemap.xml`;
+    fs.writeFileSync(path.join(CONFIG.outputDir, 'robots.txt'), robotsTxt);
+    console.log('Generated: robots.txt');
+
+    // Final Audit (Basic Check for duplicates and consistency)
+    console.log('Running final SEO audit...');
+    const auditFiles = [];
+    const walk = (dir) => {
+        fs.readdirSync(dir).forEach(file => {
+            const fullPath = path.join(dir, file);
+            if (fs.statSync(fullPath).isDirectory()) walk(fullPath);
+            else if (file.endsWith('.html')) auditFiles.push(fullPath);
+        });
+    };
+    walk(CONFIG.outputDir);
+
+    auditFiles.forEach(file => {
+        const content = fs.readFileSync(file, 'utf8');
+        const errors = [];
+
+        // Count tags
+        const titles = content.match(/<title>/g) || [];
+        const descriptions = content.match(/<meta name="description"/g) || [];
+        const canonicals = content.match(/<link rel="canonical"/g) || [];
+
+        if (titles.length > 1) errors.push(`Multiple <title> tags (${titles.length})`);
+        if (descriptions.length > 1) errors.push(`Multiple <meta name="description"> tags (${descriptions.length})`);
+        if (canonicals.length > 1) errors.push(`Multiple <link rel="canonical"> tags (${canonicals.length})`);
+
+        // Consistency check
+        if (content.includes('www.enlacesocietario.com')) errors.push('Found "www" in URLs');
+
+        if (errors.length > 0) {
+            console.warn(`[AUDIT WARNING] File: ${file}\n - ${errors.join('\n - ')}`);
+        }
+    });
 
     console.log('Build completed successfully.');
 }
