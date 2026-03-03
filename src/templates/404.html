@@ -1,32 +1,65 @@
-<section class="error-404" style="padding: var(--space-20) 0; min-height: 60vh; display: flex; align-items: center;">
-    <div class="container" style="max-width: 800px; text-align: center;">
-        <div class="error-image-container"
-            style="margin-bottom: var(--space-12); position: relative; display: inline-block;">
-            <img src="/images/illustration_404_societario.png" alt="Página no encontrada - Enlace Societario"
-                style="max-width: 100%; height: auto; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); border: 1px solid rgba(0,0,0,0.05);">
-        </div>
+<section class="error-404"
+    style="padding: var(--space-12) 0; min-height: calc(100vh - 400px); display: flex; align-items: center; overflow: hidden;">
+    <div class="container" style="max-width: 1000px;">
+        <div class="error-flex-container"
+            style="display: flex; align-items: center; justify-content: center; gap: var(--space-12); flex-wrap: wrap;">
 
-        <h1
-            style="font-size: var(--text-5xl); color: var(--color-primary); margin-bottom: var(--space-4); font-weight: 800; letter-spacing: -0.02em;">
-            ERROR 404
-        </h1>
+            <!-- Image Left -->
+            <div class="error-image-wrapper" style="flex: 1; min-width: 300px; max-width: 450px;">
+                <img src="/images/illustration_404_societario.png" alt="Página no encontrada - Enlace Societario"
+                    style="width: 100%; height: auto; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); border: 1px solid rgba(0,0,0,0.05);">
+            </div>
 
-        <p
-            style="font-size: var(--text-xl); color: var(--color-text-body); margin-bottom: var(--space-12); max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.5;">
-            La página que estás buscando no existe o fue modificada.
-        </p>
+            <!-- Content Right -->
+            <div class="error-content-wrapper" style="flex: 1; min-width: 300px; text-align: left;">
+                <h1
+                    style="font-size: var(--text-5xl); color: var(--color-primary); margin-bottom: var(--space-2); font-weight: 800; letter-spacing: -0.02em;">
+                    ERROR 404
+                </h1>
 
-        <div style="margin-bottom: var(--space-12);">
-            <a href="/" class="btn btn-primary" style="padding: 1rem 3rem; font-size: 1.1rem; border-radius: 50px;">
-                VOLVER AL INICIO
-            </a>
-        </div>
+                <p
+                    style="font-size: var(--text-xl); color: var(--color-text-body); margin-bottom: var(--space-8); line-height: 1.4; max-width: 450px;">
+                    La página que estás buscando no existe o fue modificada.
+                </p>
 
-        <div style="padding-top: var(--space-8); border-top: 1px solid var(--color-border);">
-            <p style="color: var(--color-text-body); font-size: var(--text-base);">
-                Si creés que esto es un error, podés <a href="/contacto"
-                    style="color: var(--color-accent); font-weight: 600; text-decoration: none;">contactarnos</a>.
-            </p>
+                <div style="margin-bottom: var(--space-12);">
+                    <a href="/" class="btn btn-primary"
+                        style="padding: 1rem 2.5rem; font-size: 1rem; border-radius: 50px;">
+                        VOLVER AL INICIO
+                    </a>
+                </div>
+
+                <div style="padding-top: var(--space-6); border-top: 1px solid var(--color-border); max-width: 450px;">
+                    <p style="color: var(--color-text-body); font-size: var(--text-sm);">
+                        Si creés que esto es un error, podés <a href="/contacto"
+                            style="color: var(--color-accent); font-weight: 600; text-decoration: none;">contactarnos</a>.
+                    </p>
+                </div>
+            </div>
+
         </div>
     </div>
 </section>
+
+<style>
+    @media (max-width: 768px) {
+        .error-flex-container {
+            flex-direction: column !important;
+            text-align: center !important;
+            gap: var(--space-8) !important;
+        }
+
+        .error-content-wrapper {
+            text-align: center !important;
+        }
+
+        .error-content-wrapper p {
+            margin-left: auto !important;
+            margin-right: auto !important;
+        }
+
+        .error-404 {
+            padding: var(--space-8) 0 !important;
+        }
+    }
+</style>
