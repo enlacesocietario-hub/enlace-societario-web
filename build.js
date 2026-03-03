@@ -13,6 +13,7 @@ const CONFIG = {
     templateDir: path.join(__dirname, 'src/templates'),
     contentDir: path.join(__dirname, 'src/content'),
     stylesDir: path.join(__dirname, 'src/styles'),
+    scriptsDir: path.join(__dirname, 'src/scripts'),
     publicDir: path.join(__dirname, 'public')
 };
 
@@ -238,6 +239,14 @@ async function build() {
     console.log('Copying assets...');
     if (fs.existsSync(CONFIG.stylesDir)) {
         copyDir(CONFIG.stylesDir, path.join(CONFIG.outputDir, 'styles'));
+    }
+    if (fs.existsSync(CONFIG.scriptsDir)) {
+        const distScriptsDir = path.join(CONFIG.outputDir, 'scripts');
+        ensureDir(distScriptsDir);
+        const mainJsSrc = path.join(CONFIG.scriptsDir, 'main.js');
+        if (fs.existsSync(mainJsSrc)) {
+            fs.copyFileSync(mainJsSrc, path.join(distScriptsDir, 'main.js'));
+        }
     }
     if (fs.existsSync(CONFIG.publicDir)) {
         copyDir(CONFIG.publicDir, CONFIG.outputDir);
