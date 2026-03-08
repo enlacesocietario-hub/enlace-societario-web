@@ -49,6 +49,25 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
+        // Dropdown toggle for mobile
+        const mobileDropdownToggles = mobileMenu.querySelectorAll('.mobile-dropdown-toggle');
+        mobileDropdownToggles.forEach(toggle => {
+            toggle.addEventListener('click', (e) => {
+                e.preventDefault();
+                const parent = toggle.closest('.mobile-nav-dropdown');
+                const menu = parent.querySelector('.mobile-dropdown-menu');
+                const isActive = parent.classList.contains('is-active');
+
+                if (isActive) {
+                    parent.classList.remove('is-active');
+                    menu.style.display = 'none';
+                } else {
+                    parent.classList.add('is-active');
+                    menu.style.display = 'block';
+                }
+            });
+        });
+
         // Close on backdrop click
         mobileMenu.addEventListener('click', (e) => {
             if (e.target === mobileMenu) {

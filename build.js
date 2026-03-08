@@ -241,12 +241,7 @@ async function build() {
         copyDir(CONFIG.stylesDir, path.join(CONFIG.outputDir, 'styles'));
     }
     if (fs.existsSync(CONFIG.scriptsDir)) {
-        const distScriptsDir = path.join(CONFIG.outputDir, 'scripts');
-        ensureDir(distScriptsDir);
-        const mainJsSrc = path.join(CONFIG.scriptsDir, 'main.js');
-        if (fs.existsSync(mainJsSrc)) {
-            fs.copyFileSync(mainJsSrc, path.join(distScriptsDir, 'main.js'));
-        }
+        copyDir(CONFIG.scriptsDir, path.join(CONFIG.outputDir, 'scripts'));
     }
     if (fs.existsSync(CONFIG.publicDir)) {
         copyDir(CONFIG.publicDir, CONFIG.outputDir);
@@ -278,6 +273,13 @@ async function build() {
             priority: '0.8',
             changefreq: 'monthly'
         },
+        'herramientas-monotributo-vs-responsable-inscripto.html': {
+            title: '¿Monotributo, Responsable Inscripto o Sociedad? Calculadora gratuita | Enlace Societario',
+            description: 'Evaluá gratis la mejor estructura fiscal para tu negocio en Argentina. Compará Monotributo vs Responsable Inscripto vs Sociedad con nuestro test inteligente.',
+            priority: '0.9',
+            changefreq: 'monthly',
+            slug: 'herramientas/monotributo-vs-responsable-inscripto'
+        },
         '404.html': {
             title: 'Error 404 | Enlace Societario',
             description: 'La página que estás buscando no existe o fue modificada.',
@@ -293,7 +295,7 @@ async function build() {
         if (!template) return;
 
         const info = staticPages[page];
-        const slug = page === 'index.html' ? '' : page.replace('.html', '');
+        const slug = info.slug || (page === 'index.html' ? '' : page.replace('.html', ''));
         const canonical = `${DOMAIN}${slug ? '/' + slug : '/'}`;
 
         const html = renderLayout(template, {

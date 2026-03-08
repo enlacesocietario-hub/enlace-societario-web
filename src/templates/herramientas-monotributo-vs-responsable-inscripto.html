@@ -1,0 +1,398 @@
+<style>
+    .tool-container {
+        max-width: 900px;
+        margin: -4rem auto 4rem;
+        position: relative;
+        z-index: 10;
+        padding: 0 var(--container-padding);
+    }
+
+    .tool-card {
+        background: white;
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-lg);
+        padding: var(--space-8);
+        border: 1px solid var(--color-border);
+    }
+
+    .form-block {
+        margin-bottom: var(--space-12);
+        padding-bottom: var(--space-8);
+        border-bottom: 1px solid var(--color-border);
+    }
+
+    .form-block:last-child {
+        border-bottom: none;
+        margin-bottom: var(--space-6);
+    }
+
+    .form-block h3 {
+        color: var(--color-primary);
+        font-size: var(--text-xl);
+        margin-bottom: var(--space-6);
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .form-block h3 i {
+        color: var(--color-accent);
+        font-size: 1.25rem;
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--space-6) var(--space-8);
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .form-group label {
+        font-weight: 600;
+        font-size: var(--text-sm);
+        color: var(--color-text-main);
+    }
+
+    .form-group input,
+    .form-group select {
+        padding: 0.75rem;
+        border: 1px solid #CBD5E0;
+        border-radius: var(--radius-sm);
+        font-family: var(--font-body);
+        font-size: var(--text-base);
+        transition: border-color 0.2s;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+        outline: none;
+        border-color: var(--color-accent);
+        box-shadow: 0 0 0 3px rgba(203, 161, 53, 0.1);
+    }
+
+    .form-group small {
+        font-size: var(--text-xs);
+        color: #718096;
+    }
+
+    .btn-calculate {
+        width: 100%;
+        padding: 1.25rem;
+        font-size: 1.2rem;
+        font-weight: 700;
+        margin-top: var(--space-4);
+    }
+
+    /* Results Styling */
+    .results-section {
+        margin-top: var(--space-12);
+        display: none;
+    }
+
+    .results-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--space-6);
+        margin-top: var(--space-8);
+    }
+
+    .res-card {
+        padding: var(--space-6);
+        border-radius: var(--radius-md);
+        text-align: center;
+        height: 100%;
+        transition: transform 0.3s;
+        border: 1px solid transparent;
+    }
+
+    .res-card i {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .res-card h4 {
+        margin-bottom: 0.5rem;
+        color: var(--color-primary);
+    }
+
+    .res-card p {
+        font-size: var(--text-sm);
+        line-height: 1.5;
+    }
+
+    .res-good {
+        background: #F0FFF4;
+        border-color: #C6F6D5;
+    }
+
+    .res-good i {
+        color: #38A169;
+    }
+
+    .res-mid {
+        background: #FFFAF0;
+        border-color: #FEEBC8;
+    }
+
+    .res-mid i {
+        color: #DD6B20;
+    }
+
+    .res-bad {
+        background: #FFF5F5;
+        border-color: #FED7D7;
+    }
+
+    .res-bad i {
+        color: #E53E3E;
+    }
+
+    .main-result-box {
+        background: #F8FAFC;
+        padding: var(--space-12) var(--space-8);
+        border-radius: var(--radius-lg);
+        text-align: center;
+        margin-top: var(--space-12);
+        border: 2px dashed var(--color-border);
+    }
+
+    /* Lead Capture Section */
+    .lead-capture-section {
+        background-color: var(--color-bg-alt);
+        padding: var(--space-16) 0;
+        margin-top: var(--space-20);
+        border-radius: var(--radius-lg);
+    }
+
+    .capture-card {
+        max-width: 800px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--space-12);
+        align-items: center;
+        background: white;
+        padding: var(--space-10);
+        border-radius: var(--radius-md);
+        box-shadow: var(--shadow-md);
+    }
+
+    @media (max-width: 768px) {
+
+        .form-grid,
+        .results-grid,
+        .capture-card {
+            grid-template-columns: 1fr;
+        }
+
+        .tool-container {
+            margin-top: -2rem;
+        }
+
+        .capture-card {
+            text-align: center;
+        }
+    }
+</style>
+
+<section class="hero text-center" style="padding: 8rem 0 10rem;">
+    <div class="container">
+        <h1>¿Te conviene Monotributo, Responsable Inscripto o Sociedad?</h1>
+        <p style="max-width: 800px; margin: 0 auto; font-size: 1.25rem; opacity: 0.9;">
+            Esta herramienta te permite evaluar qué estructura fiscal podría ser más conveniente para tu negocio según
+            distintos factores como facturación, costos, tipo de clientes y estructura operativa.
+        </p>
+    </div>
+</section>
+
+<div class="tool-container">
+    <div class="tool-card">
+        <form id="tool-form">
+            <!-- BLOQUE 1: ENCUADRE LEGAL -->
+            <div class="form-block">
+                <h3><i class="fas fa-balance-scale"></i> 1. Encuadre Legal</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="facturacion_mensual">Facturación mensual estimada ($)</label>
+                        <input type="number" id="facturacion_mensual" name="facturacion_mensual"
+                            placeholder="Ej: 500000" required>
+                        <small>Monto promedio de ventas sin impuestos.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="tipo_actividad">Tipo de actividad</label>
+                        <select id="tipo_actividad" name="tipo_actividad" required>
+                            <option value="servicios">Prestación de Servicios</option>
+                            <option value="bienes">Venta de Bienes Muebles</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="superficie">Superficie afectada (m²)</label>
+                        <input type="number" id="superficie" name="superficie" placeholder="Ej: 30" required>
+                        <small>Espacio físico destinado a la actividad.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="energia">Consumo eléctrico anual (kWh)</label>
+                        <input type="number" id="energia" name="energia" placeholder="Ej: 5000" required>
+                        <small>Sumatoria de facturas de luz del año.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="alquiler">Alquiler anual ($)</label>
+                        <input type="number" id="alquiler" name="alquiler" placeholder="Ej: 1200000" required>
+                        <small>Monto total pagado de alquiler en el año.</small>
+                    </div>
+                    <div class="form-group" id="precio_unitario_group" style="display: none;">
+                        <label for="precio_unitario">Precio unitario máximo ($)</label>
+                        <input type="number" id="precio_unitario" name="precio_unitario" placeholder="Ej: 50000">
+                        <small>Solo para venta de bienes muebles.</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BLOQUE 2: CONVENIENCIA ECONÓMICA -->
+            <div class="form-block">
+                <h3><i class="fas fa-hand-holding-usd"></i> 2. Conveniencia Económica</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="margen">Margen del negocio</label>
+                        <select id="margen" name="margen" required>
+                            <option value="bajo">Menos del 15%</option>
+                            <option value="medio-bajo">15% a 25%</option>
+                            <option value="medio-alto">25% a 40%</option>
+                            <option value="alto">Más del 40%</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="costos_iva">Costos con IVA</label>
+                        <select id="costos_iva" name="costos_iva" required>
+                            <option value="bajo">Menos del 15%</option>
+                            <option value="medio-bajo">15% a 25%</option>
+                            <option value="medio-alto">25% a 40%</option>
+                            <option value="alto">Más del 40%</option>
+                        </select>
+                        <small>% de costos que tienen factura A.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="tipo_clientes">Tipo de clientes</label>
+                        <select id="tipo_clientes" name="tipo_clientes" required>
+                            <option value="consumidores-finales">Consumidores finales</option>
+                            <option value="pymes">Pequeñas empresas / Monotributistas</option>
+                            <option value="grandes-empresas">Empresas medianas o grandes</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BLOQUE 3: ESTRUCTURA EMPRESARIAL -->
+            <div class="form-block">
+                <h3><i class="fas fa-building"></i> 3. Estructura de Negocio</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="cantidad_socios">Cantidad de socios</label>
+                        <select id="cantidad_socios" name="cantidad_socios" required>
+                            <option value="1">Socio único (Unipersonal)</option>
+                            <option value="2">2 socios</option>
+                            <option value="3">3 socios</option>
+                            <option value="4+">4 o más socios</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="cantidad_empleados">Cantidad de empleados</label>
+                        <select id="cantidad_empleados" name="cantidad_empleados" required>
+                            <option value="0">Sin empleados</option>
+                            <option value="1-5">1 a 5 empleados</option>
+                            <option value="6-10">6 a 10 empleados</option>
+                            <option value="10+">Más de 10 empleados</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="crecimiento_esperado">Crecimiento esperado</label>
+                        <select id="crecimiento_esperado" name="crecimiento_esperado" required>
+                            <option value="no">Estable / Sin cambios</option>
+                            <option value="moderado">Crecimiento moderado</option>
+                            <option value="alto">Crecimiento alto / Escalabilidad</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="separacion_patrimonio">¿Desea separación de patrimonio?</label>
+                        <select id="separacion_patrimonio" name="separacion_patrimonio" required>
+                            <option value="no">No es prioridad</option>
+                            <option value="si">Sí, es fundamental (Limitar responsabilidad)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-calculate">Obtener Diagnóstico Gratuito</button>
+        </form>
+
+        <!-- SECCIÓN DE RESULTADOS -->
+        <div id="tool-results" class="results-section">
+            <h2 class="text-center" style="margin-bottom: 2rem;">Resultado de tu Evaluación</h2>
+
+            <div class="results-grid">
+                <div id="res-encuadre"></div>
+                <div id="res-conveniencia"></div>
+                <div id="res-estructura"></div>
+            </div>
+
+            <div class="main-result-box">
+                <div id="main-conclusion"></div>
+
+                <div style="margin-top: 3rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                    <a href="/contacto" class="btn btn-primary" style="padding: 1rem 2rem;">Agendar consulta con
+                        especialista</a>
+                    <a id="cta-whatsapp" href="https://wa.me/549116705489" target="_blank" class="btn btn-secondary"
+                        style="padding: 1rem 2rem; background-color: #25D366; border-color: #25D366; color: white; display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="fab fa-whatsapp"></i> Hablar por WhatsApp
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- BLOQUE GUÍA GRATUITA -->
+<section class="lead-capture-section">
+    <div class="container">
+        <div class="capture-card">
+            <div>
+                <span class="category-tag" style="margin-bottom: 1rem; display: inline-block;">RECURSO GRATUITO</span>
+                <h2 style="font-size: 2rem; margin-bottom: 1.5rem;">Guía: Monotributo vs Responsable Inscripto vs
+                    Sociedad</h2>
+                <p>Descargá nuestra guía completa donde explicamos en detalle cuándo dar el salto de un régimen a otro y
+                    cómo evitar pagar impuestos de más.</p>
+            </div>
+            <form id="lead-form" class="form-group"
+                style="background: var(--color-bg-alt); padding: 2rem; border-radius: var(--radius-md);">
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label for="lead-name">Nombre completo</label>
+                    <input type="text" id="lead-name" placeholder="Tu nombre" required>
+                </div>
+                <div class="form-group" style="margin-bottom: 1.5rem;">
+                    <label for="lead-email">Correo electrónico</label>
+                    <input type="email" id="lead-email" placeholder="email@ejemplo.com" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Descargar guía gratuita</button>
+                <p id="lead-success"
+                    style="display: none; margin-top: 1rem; color: var(--color-secondary); font-weight: 600; text-align: center;">
+                    <i class="fas fa-check-circle"></i> ¡Gracias! En breve recibirás la guía en tu email.
+                </p>
+            </form>
+        </div>
+    </div>
+</section>
+
+<div class="container" style="margin-top: 4rem; margin-bottom: 4rem;">
+    <p
+        style="font-size: 0.85rem; color: #718096; text-align: center; border-top: 1px solid var(--color-border); padding-top: 2rem;">
+        “Este test tiene fines orientativos y no constituye asesoramiento fiscal o legal. Las recomendaciones se basan
+        en los datos ingresados y en criterios generales del sistema tributario argentino en 2026.”
+    </p>
+</div>
+
+<script src="/scripts/tool-monotributo.js"></script>
