@@ -200,160 +200,168 @@
     }
 </style>
 
-<section class="hero text-center" style="padding: 8rem 0 10rem;">
+<section class="hero text-center" style="padding: 8rem 0 8rem;">
     <div class="container">
         <h1>¿Te conviene Monotributo, Responsable Inscripto o Sociedad?</h1>
-        <p style="max-width: 800px; margin: 0 auto; font-size: 1.25rem; opacity: 0.9;">
+        <p style="max-width: 800px; margin: 0 auto; font-size: 1.25rem; opacity: 0.9; margin-bottom: 2rem;">
             Esta herramienta te permite evaluar qué estructura fiscal podría ser más conveniente para tu negocio según
             distintos factores como facturación, costos, tipo de clientes y estructura operativa.
         </p>
+        <div
+            style="background: rgba(255,255,255,0.1); display: inline-block; padding: 0.5rem 1.5rem; border-radius: 50px; font-size: 0.95rem; font-weight: 500;">
+            <i class="far fa-clock" style="margin-right: 0.5rem;"></i> Completá este test en menos de 1 minuto
+        </div>
     </div>
 </section>
 
 <div class="tool-container">
-    <div class="tool-card">
-        <form id="tool-form">
-            <!-- BLOQUE 1: ENCUADRE LEGAL -->
-            <div class="form-block">
-                <h3><i class="fas fa-balance-scale"></i> 1. Encuadre Legal</h3>
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label for="facturacion_mensual">Facturación mensual estimada ($)</label>
-                        <input type="number" id="facturacion_mensual" name="facturacion_mensual"
-                            placeholder="Ej: 500000" required>
-                        <small>Monto promedio de ventas sin impuestos.</small>
-                    </div>
-                    <div class="form-group">
-                        <label for="tipo_actividad">Tipo de actividad</label>
-                        <select id="tipo_actividad" name="tipo_actividad" required>
-                            <option value="servicios">Prestación de Servicios</option>
-                            <option value="bienes">Venta de Bienes Muebles</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="superficie">Superficie afectada (m²)</label>
-                        <input type="number" id="superficie" name="superficie" placeholder="Ej: 30" required>
-                        <small>Espacio físico destinado a la actividad.</small>
-                    </div>
-                    <div class="form-group">
-                        <label for="energia">Consumo eléctrico anual (kWh)</label>
-                        <input type="number" id="energia" name="energia" placeholder="Ej: 5000" required>
-                        <small>Sumatoria de facturas de luz del año.</small>
-                    </div>
-                    <div class="form-group">
-                        <label for="alquiler">Alquiler anual ($)</label>
-                        <input type="number" id="alquiler" name="alquiler" placeholder="Ej: 1200000" required>
-                        <small>Monto total pagado de alquiler en el año.</small>
-                    </div>
-                    <div class="form-group" id="precio_unitario_group" style="display: none;">
-                        <label for="precio_unitario">Precio unitario máximo ($)</label>
-                        <input type="number" id="precio_unitario" name="precio_unitario" placeholder="Ej: 50000">
-                        <small>Solo para venta de bienes muebles.</small>
-                    </div>
+    <form id="tool-form">
+        <!-- BLOQUE 1: ENCUADRE LEGAL -->
+        <div class="form-block">
+            <h3><i class="fas fa-balance-scale"></i> 1. Encuadre Legal</h3>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="facturacion_mensual">Facturación mensual estimada ($)</label>
+                    <input type="number" id="facturacion_mensual" name="facturacion_mensual" placeholder="Ej: 2500000"
+                        required>
+                    <small>Monto promedio de ventas sin impuestos.</small>
                 </div>
-            </div>
-
-            <!-- BLOQUE 2: CONVENIENCIA ECONÓMICA -->
-            <div class="form-block">
-                <h3><i class="fas fa-hand-holding-usd"></i> 2. Conveniencia Económica</h3>
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label for="margen">Margen del negocio</label>
-                        <select id="margen" name="margen" required>
-                            <option value="bajo">Menos del 15%</option>
-                            <option value="medio-bajo">15% a 25%</option>
-                            <option value="medio-alto">25% a 40%</option>
-                            <option value="alto">Más del 40%</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="costos_iva">Costos con IVA</label>
-                        <select id="costos_iva" name="costos_iva" required>
-                            <option value="bajo">Menos del 15%</option>
-                            <option value="medio-bajo">15% a 25%</option>
-                            <option value="medio-alto">25% a 40%</option>
-                            <option value="alto">Más del 40%</option>
-                        </select>
-                        <small>% de costos que tienen factura A.</small>
-                    </div>
-                    <div class="form-group">
-                        <label for="tipo_clientes">Tipo de clientes</label>
-                        <select id="tipo_clientes" name="tipo_clientes" required>
-                            <option value="consumidores-finales">Consumidores finales</option>
-                            <option value="pymes">Pequeñas empresas / Monotributistas</option>
-                            <option value="grandes-empresas">Empresas medianas o grandes</option>
-                        </select>
-                    </div>
+                <div class="form-group">
+                    <label for="tipo_actividad">Tipo de actividad</label>
+                    <select id="tipo_actividad" name="tipo_actividad" required>
+                        <option value="servicios">Prestación de Servicios</option>
+                        <option value="bienes">Venta de Bienes Muebles</option>
+                    </select>
                 </div>
-            </div>
-
-            <!-- BLOQUE 3: ESTRUCTURA EMPRESARIAL -->
-            <div class="form-block">
-                <h3><i class="fas fa-building"></i> 3. Estructura de Negocio</h3>
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label for="cantidad_socios">Cantidad de socios</label>
-                        <select id="cantidad_socios" name="cantidad_socios" required>
-                            <option value="1">Socio único (Unipersonal)</option>
-                            <option value="2">2 socios</option>
-                            <option value="3">3 socios</option>
-                            <option value="4+">4 o más socios</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="cantidad_empleados">Cantidad de empleados</label>
-                        <select id="cantidad_empleados" name="cantidad_empleados" required>
-                            <option value="0">Sin empleados</option>
-                            <option value="1-5">1 a 5 empleados</option>
-                            <option value="6-10">6 a 10 empleados</option>
-                            <option value="10+">Más de 10 empleados</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="crecimiento_esperado">Crecimiento esperado</label>
-                        <select id="crecimiento_esperado" name="crecimiento_esperado" required>
-                            <option value="no">Estable / Sin cambios</option>
-                            <option value="moderado">Crecimiento moderado</option>
-                            <option value="alto">Crecimiento alto / Escalabilidad</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="separacion_patrimonio">¿Desea separación de patrimonio?</label>
-                        <select id="separacion_patrimonio" name="separacion_patrimonio" required>
-                            <option value="no">No es prioridad</option>
-                            <option value="si">Sí, es fundamental (Limitar responsabilidad)</option>
-                        </select>
-                    </div>
+                <div class="form-group">
+                    <label for="superficie">Superficie afectada (m²)</label>
+                    <input type="number" id="superficie" name="superficie" placeholder="Ej: 30" required>
+                    <small>Espacio físico destinado a la actividad.</small>
                 </div>
-            </div>
-
-            <button type="submit" class="btn btn-primary btn-calculate">Obtener Diagnóstico Gratuito</button>
-        </form>
-
-        <!-- SECCIÓN DE RESULTADOS -->
-        <div id="tool-results" class="results-section">
-            <h2 class="text-center" style="margin-bottom: 2rem;">Resultado de tu Evaluación</h2>
-
-            <div class="results-grid">
-                <div id="res-encuadre"></div>
-                <div id="res-conveniencia"></div>
-                <div id="res-estructura"></div>
-            </div>
-
-            <div class="main-result-box">
-                <div id="main-conclusion"></div>
-
-                <div style="margin-top: 3rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-                    <a href="/contacto" class="btn btn-primary" style="padding: 1rem 2rem;">Agendar consulta con
-                        especialista</a>
-                    <a id="cta-whatsapp" href="https://wa.me/549116705489" target="_blank" class="btn btn-secondary"
-                        style="padding: 1rem 2rem; background-color: #25D366; border-color: #25D366; color: white; display: flex; align-items: center; gap: 0.5rem;">
-                        <i class="fab fa-whatsapp"></i> Hablar por WhatsApp
-                    </a>
+                <div class="form-group">
+                    <label for="energia">Consumo eléctrico anual (kWh)</label>
+                    <input type="number" id="energia" name="energia" placeholder="Ej: 5000" required>
+                    <small>Sumatoria de facturas de luz del año.</small>
+                </div>
+                <div class="form-group">
+                    <label for="alquiler">Alquiler anual ($)</label>
+                    <input type="number" id="alquiler" name="alquiler" placeholder="Ej: 1200000" required>
+                    <small>Monto total pagado de alquiler en el año.</small>
+                </div>
+                <div class="form-group" id="precio_unitario_group" style="display: none;">
+                    <label for="precio_unitario">Precio unitario máximo ($)</label>
+                    <input type="number" id="precio_unitario" name="precio_unitario" placeholder="Ej: 50000">
+                    <small>Solo para venta de bienes muebles.</small>
                 </div>
             </div>
         </div>
+
+        <!-- BLOQUE 2: CONVENIENCIA ECONÓMICA -->
+        <div class="form-block">
+            <h3><i class="fas fa-hand-holding-usd"></i> 2. Conveniencia Económica</h3>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="margen">Margen del negocio</label>
+                    <select id="margen" name="margen" required>
+                        <option value="" disabled selected>Seleccionar...</option>
+                        <option value="bajo">Bajo (Menos del 15%)</option>
+                        <option value="medio-bajo">Medio-Bajo (15% a 25%)</option>
+                        <option value="medio-alto">Medio-Alto (25% a 40%)</option>
+                        <option value="alto">Alto (Más del 40%)</option>
+                    </select>
+                    <small>Ganancia aproximada antes de impuestos.</small>
+                </div>
+                <div class="form-group">
+                    <label for="costos_iva">Costos con IVA</label>
+                    <select id="costos_iva" name="costos_iva" required>
+                        <option value="" disabled selected>Seleccionar...</option>
+                        <option value="bajo">Menos del 15%</option>
+                        <option value="medio-bajo">15% a 25%</option>
+                        <option value="medio-alto">25% a 40%</option>
+                        <option value="alto">Más del 40%</option>
+                    </select>
+                    <small>% de costos que tienen factura A.</small>
+                </div>
+                <div class="form-group">
+                    <label for="tipo_clientes">Tipo de clientes</label>
+                    <select id="tipo_clientes" name="tipo_clientes" required>
+                        <option value="" disabled selected>Seleccionar...</option>
+                        <option value="consumidores-finales">Consumidores finales</option>
+                        <option value="pymes">Pequeñas empresas / Monotributistas</option>
+                        <option value="grandes-empresas">Empresas medianas o grandes (Suelen requerir Factura A)
+                        </option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- BLOQUE 3: ESTRUCTURA EMPRESARIAL -->
+        <div class="form-block">
+            <h3><i class="fas fa-building"></i> 3. Estructura de Negocio</h3>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="cantidad_socios">Cantidad de socios</label>
+                    <select id="cantidad_socios" name="cantidad_socios" required>
+                        <option value="1">Socio único (Unipersonal)</option>
+                        <option value="2">2 socios</option>
+                        <option value="3">3 socios</option>
+                        <option value="4+">4 o más socios</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="cantidad_empleados">Cantidad de empleados</label>
+                    <select id="cantidad_empleados" name="cantidad_empleados" required>
+                        <option value="0">Sin empleados</option>
+                        <option value="1-5">1 a 5 empleados</option>
+                        <option value="6-10">6 a 10 empleados</option>
+                        <option value="10+">Más de 10 empleados</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="crecimiento_esperado">Crecimiento esperado</label>
+                    <select id="crecimiento_esperado" name="crecimiento_esperado" required>
+                        <option value="no">Estable / Sin cambios</option>
+                        <option value="moderado">Crecimiento moderado</option>
+                        <option value="alto">Crecimiento alto / Escalabilidad</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="separacion_patrimonio">¿Desea separación de patrimonio?</label>
+                    <select id="separacion_patrimonio" name="separacion_patrimonio" required>
+                        <option value="no">No es prioridad</option>
+                        <option value="si">Sí, es fundamental (Limitar responsabilidad)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-calculate">Obtener Diagnóstico Gratuito</button>
+    </form>
+
+    <!-- SECCIÓN DE RESULTADOS -->
+    <div id="tool-results" class="results-section">
+        <h2 class="text-center" style="margin-bottom: 2rem;">Resultado de tu Evaluación</h2>
+
+        <div class="results-grid">
+            <div id="res-encuadre"></div>
+            <div id="res-conveniencia"></div>
+            <div id="res-estructura"></div>
+        </div>
+
+        <div class="main-result-box">
+            <div id="main-conclusion"></div>
+
+            <div style="margin-top: 3rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <a href="/contacto" class="btn btn-primary" style="padding: 1rem 2rem;">Agendar consulta con
+                    especialista</a>
+                <a id="cta-whatsapp" href="https://wa.me/5491167805489" target="_blank" class="btn btn-secondary"
+                    style="padding: 1rem 2rem; background-color: #25D366; border-color: #25D366; color: white; display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="fab fa-whatsapp"></i> Hablar por WhatsApp
+                </a>
+            </div>
+        </div>
     </div>
+</div>
 </div>
 
 <!-- BLOQUE GUÍA GRATUITA -->
@@ -387,12 +395,49 @@
     </div>
 </section>
 
-<div class="container" style="margin-top: 4rem; margin-bottom: 4rem;">
-    <p
-        style="font-size: 0.85rem; color: #718096; text-align: center; border-top: 1px solid var(--color-border); padding-top: 2rem;">
-        “Este test tiene fines orientativos y no constituye asesoramiento fiscal o legal. Las recomendaciones se basan
-        en los datos ingresados y en criterios generales del sistema tributario argentino en 2026.”
-    </p>
+<!-- SECCIÓN SEO: CONTENIDO EXPLICATIVO -->
+<section class="section" style="padding-top: var(--space-20); padding-bottom: 0;">
+    <div class="container" style="max-width: 800px;">
+        <h2 style="font-size: 2rem; color: var(--color-primary); margin-bottom: 1.5rem;">¿Cuándo conviene ser
+            Monotributista?</h2>
+        <p style="margin-bottom: 2.5rem; line-height: 1.8;">
+            El Monotributo es el régimen ideal para emprendedores o profesionales que están comenzando o que tienen una
+            estructura de costos baja. Su principal ventaja es la simplificación: mediante el pago de una cuota fija
+            mensual, se cubren impuestos nacionales (IVA y Ganancias), aportes jubilatorios y obra social. Es
+            especialmente conveniente cuando tus clientes son mayoritariamente consumidores finales, ya que no requieren
+            discriminar IVA en sus compras.
+        </p>
+
+        <h2 style="font-size: 2rem; color: var(--color-primary); margin-bottom: 1.5rem;">¿Cuándo conviene ser
+            Responsable Inscripto?</h2>
+        <p style="margin-bottom: 2.5rem; line-height: 1.8;">
+            El paso al Régimen General (Responsable Inscripto) suele ser obligatorio al superar los límites de
+            facturación del Monotributo, pero también puede ser una decisión estratégica. Conviene cuando tu margen de
+            ganancia es acotado o cuando tus costos operativos tienen un alto componente de IVA Factura A. Al ser
+            Responsable Inscripto, podés deducir esos gastos y tomar el crédito fiscal, lo que en muchos casos reduce la
+            carga impositiva real comparado con las escalas más altas del Monotributo.
+        </p>
+
+        <h2 style="font-size: 2rem; color: var(--color-primary); margin-bottom: 1.5rem;">¿En qué casos conviene crear
+            una sociedad?</h2>
+        <p style="margin-bottom: 4rem; line-height: 1.8;">
+            Crear una sociedad (como una SRL o una SA) es recomendable cuando el negocio crece y requiere una estructura
+            más formal. La principal ventaja es la separación del patrimonio personal del de la empresa, lo que limita
+            la responsabilidad de los socios ante eventualidades comerciales. Además, las sociedades facilitan la
+            incorporación de inversores, la transferencia de cuotas sociales y ofrecen una imagen de mayor solidez ante
+            grandes empresas y organismos financieros.
+        </p>
+    </div>
+</section>
+
+<div class="container" style="margin-top: 2rem; margin-bottom: 4rem; text-align: center;">
+    <div style="max-width: 700px; margin: 0 auto; padding-top: 2rem; border-top: 1px solid var(--color-border);">
+        <p style="font-size: 0.85rem; color: #718096; line-height: 1.6;">
+            “Este test tiene fines orientativos y no constituye asesoramiento fiscal o legal. Las recomendaciones se
+            basan
+            en los datos ingresados y en criterios generales del sistema tributario argentino en 2026.”
+        </p>
+    </div>
 </div>
 
 <script src="/scripts/tool-monotributo.js"></script>

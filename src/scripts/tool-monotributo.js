@@ -207,29 +207,64 @@ document.addEventListener('DOMContentLoaded', () => {
         // Conclusión General
         let finalTitle = "";
         let finalDesc = "";
+        let btnText = "Agendar consulta con especialista";
 
         if (errores.length > 0 || scoreEcon <= -4) {
             if (scoreSoc >= 4) {
-                finalTitle = "Sociedad recomendada";
+                finalTitle = "Sociedad recomendable";
                 finalDesc = "Dada tu escala de negocio y estructura operativa, una SRL o SA te brindará la protección patrimonial y el marco fiscal adecuado para seguir creciendo.";
+                btnText = "Consultar sobre estructuración societaria";
             } else {
                 finalTitle = "Responsable Inscripto recomendable";
-                finalDesc = "Tu nivel de facturación o estructura de costos supera los beneficios del Monotributo. Operar como Responsable Inscripto te permitirá deducir gastos y IVA.";
+                finalDesc = "Tu nivel de facturación o estructura de costos supera los beneficios del Monotributo. Operar como Responsable Inscripto te permitirá deducir gastos e IVA de forma profesional.";
+                btnText = "Optimizar mi situación impositiva";
             }
         } else {
             finalTitle = "Monotributo recomendado";
-            finalDesc = "Es la opción más simplificada y económica para tu situación actual. Te recomendamos monitorear tus límites semestralmente para no ser excluido.";
+            finalDesc = "Es la opción más simplificada y económica para tu situación actual. Te recomendamos realizar un monitoreo semestral de tus límites para evitar exclusiones sorpresivas.";
+            btnText = "Recibir asesoramiento preventivo";
         }
 
         mainConclusion.innerHTML = `
-            <h3 style="color: var(--color-primary); margin-bottom: 1rem;">${finalTitle}</h3>
-            <p style="font-size: 1.1rem; color: var(--color-text-body); max-width: 800px; margin: 0 auto;">${finalDesc}</p>
+            <div style="margin-bottom: 2rem;">
+                <h3 style="color: var(--color-primary); font-size: 1.75rem; margin-bottom: 1rem;">${finalTitle}</h3>
+                <p style="font-size: 1.15rem; color: var(--color-text-body); max-width: 800px; margin: 0 auto; line-height: 1.6;">${finalDesc}</p>
+            </div>
         `;
 
+        // Botón principal dinámico
+        const mainBtn = resultsSection.querySelector('.btn-primary');
+        if (mainBtn) {
+            mainBtn.textContent = btnText;
+        }
+
         // Ajustar Link WhatsApp según resultado
-        const waBase = "https://wa.me/549116705489?text=";
-        const waMsg = encodeURIComponent(`Hola Enlace Societario, hice el test y el resultado fue: ${finalTitle}. Me gustaría recibir asesoramiento.`);
+        const waBase = "https://wa.me/5491167805489?text=";
+        const waMsg = encodeURIComponent(`Hola Enlace Societario, hice el test y el resultado fue: ${finalTitle}. Me gustaría recibir asesoramiento personalizado.`);
         ctaWhatApp.href = waBase + waMsg;
+
+        // Bonus: Función compartir (opcional/prolija)
+        addShareFeature(finalTitle);
+    }
+
+    function addShareFeature(result) {
+        let shareContainer = document.getElementById('share-container');
+        if (!shareContainer) {
+            shareContainer = document.createElement('div');
+            shareContainer.id = 'share-container';
+            shareContainer.style.marginTop = '1.5rem';
+            document.querySelector('.main-result-box').appendChild(shareContainer);
+        }
+
+        const shareText = encodeURIComponent(`Hola! Hice el test de Enlace Societario y mi resultado fue: ${result}. Podés hacerlo acá: `);
+        const shareUrl = encodeURIComponent(window.location.href);
+
+        shareContainer.innerHTML = `
+            <button onclick="window.open('https://api.whatsapp.com/send?text=${shareText}${shareUrl}', '_blank')" 
+                    style="background: none; border: none; color: var(--color-text-body); font-size: 0.9rem; cursor: pointer; text-decoration: underline; display: flex; align-items: center; gap: 0.5rem; margin: 0 auto;">
+                <i class="fas fa-share-alt"></i> Compartir resultado por WhatsApp
+            </button>
+        `;
     }
 
     // Feedback visual para el formulario de guía
