@@ -319,9 +319,14 @@ async function build() {
             extraMeta: info.noindex ? '<meta name="robots" content="noindex, follow">' : ''
         });
 
-        const outputPath = page === 'index.html'
-            ? path.join(CONFIG.outputDir, 'index.html')
-            : path.join(CONFIG.outputDir, slug, 'index.html');
+        let outputPath;
+        if (page === 'index.html') {
+            outputPath = path.join(CONFIG.outputDir, 'index.html');
+        } else if (page === '404.html') {
+            outputPath = path.join(CONFIG.outputDir, '404.html');
+        } else {
+            outputPath = path.join(CONFIG.outputDir, slug, 'index.html');
+        }
 
         ensureDir(path.dirname(outputPath));
         fs.writeFileSync(outputPath, html);
