@@ -280,6 +280,13 @@ async function build() {
             changefreq: 'monthly',
             slug: 'herramientas/monotributo-vs-responsable-inscripto'
         },
+        'herramientas-que-sociedad-conviene.html': {
+            title: '¿Qué tipo de sociedad te conviene? Test gratuito | Enlace Societario',
+            description: 'Descubrí qué tipo de sociedad podría adaptarse mejor a tu proyecto en Argentina. Realizá nuestro test gratuito y obtené una recomendación orientativa al instante.',
+            priority: '0.9',
+            changefreq: 'monthly',
+            slug: 'herramientas/que-tipo-de-sociedad-te-conviene'
+        },
         '404.html': {
             title: 'Error 404 | Enlace Societario',
             description: 'La página que estás buscando no existe o fue modificada.',
