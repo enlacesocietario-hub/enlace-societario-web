@@ -96,6 +96,8 @@
     transition: all 0.2s ease;
     z-index: 100;
     margin-top: 10px;
+    display: flex;
+    flex-direction: column;
 }
 
 /* Arrow for dropdown */

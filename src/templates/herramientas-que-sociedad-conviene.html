@@ -63,14 +63,17 @@
     .radio-group {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 1rem;
-        row-gap: 1.25rem;
-        /* Prevent vertical overlapping */
+        gap: 1.25rem;
+        /* Increased gap */
+        row-gap: 1.5rem;
+        /* Explicit vertical spacing */
     }
 
     .radio-card {
         position: relative;
         cursor: pointer;
+        display: block;
+        /* Ensure block for consistent sizing */
     }
 
     .radio-card input {
@@ -83,13 +86,15 @@
     .card-ui {
         display: flex;
         align-items: center;
-        padding: 0.7rem 1.25rem;
-        /* Reduced height padding */
+        padding: 0.6rem 1rem;
+        /* Further reduced height padding */
         border: 2px solid #E2E8F0;
         border-radius: var(--radius-md);
         transition: all 0.2s ease;
         background: #F8FAFC;
         height: 100%;
+        min-height: 70px;
+        /* Ensure minimum height for alignment */
         font-size: 0.95rem;
         font-weight: 500;
         color: var(--color-text-main);
@@ -235,6 +240,15 @@
         position: relative;
         padding-bottom: 3.5rem;
         /* Space for meta footer */
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        text-decoration: none;
+        /* Make entire card clickable */
+        color: inherit;
+    }
+
+    .blog-card-refined:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
     }
 
     .blog-card-refined .card-image {
@@ -316,11 +330,16 @@
 <section class="hero text-center" style="padding: 10rem 0 14rem;">
     <div class="container">
         <h1>¿Qué tipo de sociedad te conviene?</h1>
-        <p
-            style="max-width: 800px; margin: 0 auto; font-size: 1.25rem; opacity: 0.9; margin-bottom: 2.5rem; line-height: 1.6;">
-            Test gratuito para saber qué estructura societaria te conviene elegir entre SAS, SRL, SA, Asociación Civil o
-            Fundación.
-        </p>
+        <div
+            style="max-width: 850px; margin: 0 auto; font-size: 1.15rem; opacity: 0.95; margin-bottom: 2.5rem; line-height: 1.7; text-align: center; color: white;">
+            <p style="margin-bottom: 1.25rem;">Elegir la estructura legal correcta es una de las decisiones más
+                importantes al iniciar un proyecto o empresa en Argentina.</p>
+            <p style="margin-bottom: 1.25rem;">Dependiendo del tipo de actividad, la cantidad de socios, la proyección
+                de crecimiento y el nivel de formalidad que busques, puede convenirte crear una SAS, una SRL, una SA,
+                una asociación civil o incluso una fundación.</p>
+            <p>Para ayudarte a orientarte, desarrollamos este test interactivo gratuito que analiza las características
+                de tu proyecto y sugiere qué tipo de estructura podría adaptarse mejor a tu caso.</p>
+        </div>
         <div
             style="background: rgba(255,255,255,0.1); display: inline-block; padding: 0.6rem 2rem; border-radius: 50px; font-size: 1rem; font-weight: 500; border: 1px solid rgba(255,255,255,0.2);">
             <i class="far fa-clock" style="margin-right: 0.5rem;"></i> Completá este test en menos de 1 minuto
@@ -543,40 +562,42 @@
         <h2 style="margin-bottom: 4rem;">¿Querés profundizar sobre los tipos de sociedades?</h2>
         <div class="related-articles-grid">
             <!-- Card 1 -->
-            <article class="blog-card-refined">
+            <a href="/blog/diferencias-entre-sas-srl-sa" class="blog-card-refined"
+                title="Leer más sobre Diferencias entre SRL, SA y SAS">
                 <div class="card-image">
-                    <img src="/images/hero-bg.webp" alt="Diferencias entre SRL, SA y SAS">
+                    <img src="https://images.unsplash.com/photo-1554469384-e58fac16e23a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                        alt="Diferencias entre SRL, SA y SAS">
                 </div>
                 <div class="card-content">
                     <span class="category-tag">Trámites y Procesos Legales</span>
                     <h3>Diferencias entre SRL, SA y SAS</h3>
-                    <p>Comparativa legal para elegir la sociedad ideal en Argentina Si estás por constituir una...</p>
-                    <a href="/blog/diferencias-entre-sas-srl-sa" class="stretched-link"
-                        title="Diferencias entre SRL, SA y SAS" style="display: none;"></a>
+                    <p>Comparativa legal para elegir la sociedad ideal en Argentina. Analizamos costos de constitución,
+                        responsabilidad y administración.</p>
                 </div>
                 <div class="card-footer">
                     <span><i class="fas fa-user-edit"></i> Alicia Stratico</span>
                     <span><i class="far fa-calendar-alt"></i> 26 de junio de 2025</span>
                 </div>
-            </article>
+            </a>
 
             <!-- Card 2 -->
-            <article class="blog-card-refined">
+            <a href="/blog/que-tipo-de-sociedad-me-conviene" class="blog-card-refined"
+                title="Leer más sobre ¿Qué tipo de sociedad me conviene?">
                 <div class="card-image">
-                    <img src="/images/hero-bg.webp" alt="¿Qué tipo de sociedad me conviene?">
+                    <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                        alt="¿Qué tipo de sociedad me conviene?">
                 </div>
                 <div class="card-content">
                     <span class="category-tag">Preguntas Frecuentes</span>
                     <h3>¿Qué tipo de sociedad me conviene?</h3>
-                    <p>Elegí la estructura legal adecuada para tu emprendimiento o empresa. Cuando estás...</p>
-                    <a href="/blog/que-tipo-de-sociedad-me-conviene" class="stretched-link"
-                        title="¿Qué tipo de sociedad me conviene?" style="display: none;"></a>
+                    <p>Elegí la estructura legal adecuada para tu emprendimiento o empresa. Los puntos clave para
+                        decidir sin errores.</p>
                 </div>
                 <div class="card-footer">
                     <span><i class="fas fa-user-edit"></i> Alicia Stratico</span>
                     <span><i class="far fa-calendar-alt"></i> 24 de junio de 2025</span>
                 </div>
-            </article>
+            </a>
         </div>
     </div>
 </section>
