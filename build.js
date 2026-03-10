@@ -273,6 +273,13 @@ async function build() {
             priority: '0.8',
             changefreq: 'monthly'
         },
+        'herramientas.html': {
+            title: 'Herramientas para emprendedores y empresas | Enlace Societario',
+            description: 'Utilizá nuestras herramientas gratuitas para evaluar si te conviene ser monotributo, responsable inscripto o tener una sociedad y analizar qué tipo de sociedad puede adaptarse mejor a tu proyecto.',
+            priority: '0.9',
+            changefreq: 'monthly',
+            slug: 'herramientas'
+        },
         'herramientas-monotributo-vs-responsable-inscripto.html': {
             title: '¿Monotributo, Responsable Inscripto o Sociedad? Calculadora gratuita | Enlace Societario',
             description: 'Evaluá gratis la mejor estructura fiscal para tu negocio en Argentina. Compará Monotributo vs Responsable Inscripto vs Sociedad con nuestro test inteligente.',
