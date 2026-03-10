@@ -233,10 +233,14 @@
     flex-direction: column;
     height: 100%;
     position: relative;
-    padding-bottom: 3.5rem;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     text-decoration: none;
     color: inherit;
+    box-sizing: border-box;
+}
+
+.blog-card-refined {
+    padding-bottom: 3.5rem;
 }
 
 .blog-card-refined:hover,
