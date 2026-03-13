@@ -35,8 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (mobileMenuClose) {
             mobileMenuClose.addEventListener('click', (e) => {
                 e.preventDefault();
-                mobileMenu.classList.remove('is-open');
-                body.style.overflow = '';
+                toggleMobileMenu();
             });
         }
 
@@ -44,8 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const mobileLinks = mobileMenu.querySelectorAll('a');
         mobileLinks.forEach(link => {
             link.addEventListener('click', () => {
-                mobileMenu.classList.remove('is-open');
-                body.style.overflow = '';
+                toggleMobileMenu();
             });
         });
 

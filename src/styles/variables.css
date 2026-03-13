@@ -31,7 +31,8 @@
     /* Light Grey for text on dark bg */
     --color-text-white: #FFFFFF;
 
-    --color-border: #E2E8F0;
+    --color-border: #CBD5E0;
+    /* Slightly darker for better accessibility focus/borders */
 
     /* --- Typography --- */
     --font-heading: 'Plus Jakarta Sans', sans-serif;

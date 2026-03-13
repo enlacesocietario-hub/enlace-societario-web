@@ -6,8 +6,22 @@
     padding: 0 var(--container-padding);
 }
 
+@media (max-width: 768px) {
+    .container {
+        padding: 0 1.5rem;
+        /* Increased side padding for better legibility on mobile */
+    }
+}
+
 .section {
     padding: var(--space-16) 0;
+}
+
+@media (max-width: 768px) {
+    .section {
+        padding: 2.5rem 0;
+        /* Reduced vertical padding for better rhythm on mobile */
+    }
 }
 
 .section-bg-alt {
@@ -339,12 +353,15 @@
 
     .hero-content div[style*="display: flex"] {
         flex-direction: column !important;
-        gap: 1.25rem !important;
+        gap: 1rem !important;
+        /* Slightly reduced gap */
     }
 
     .hero-content div[style*="display: flex"] .btn {
         margin: 0 !important;
         width: 100% !important;
+        padding: 0.875rem 1.5rem !important;
+        /* Better touch target */
     }
 
     .hero {
@@ -364,22 +381,24 @@
     .mobile-menu-overlay {
         position: fixed;
         top: 0;
-        left: -100%;
+        left: 0;
         width: 100%;
         height: 100%;
         background: white;
         z-index: 9999;
         /* Higher than header */
-        transition: left 0.3s ease;
+        transform: translateX(-100%);
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         padding: 2rem;
         display: none;
-        /* Controlled by .is-open */
+        /* Controlled by JS to manage display vs transform */
         flex-direction: column;
+        will-change: transform;
     }
 
     .mobile-menu-overlay.is-open {
         display: flex;
-        left: 0;
+        transform: translateX(0);
     }
 
     .mobile-menu-header {
@@ -407,11 +426,22 @@
     }
 
     .mobile-nav ul li a {
+        display: block;
+        /* Full width touch area */
+        padding: 0.75rem 0;
+        /* Vertical hit area */
         font-size: 1.35rem;
         font-weight: 700;
         color: var(--color-primary);
         text-decoration: none;
         text-transform: uppercase;
+        transition: background-color 0.2s;
+    }
+
+    .mobile-nav ul li a:active {
+        background-color: rgba(0, 0, 0, 0.05);
+        /* Visual feedback on tap */
+        border-radius: var(--radius-sm);
     }
 
     .mobile-nav .btn-primary {
@@ -457,10 +487,19 @@
         color: var(--color-primary);
         font-size: 1.75rem;
         cursor: pointer;
-        padding: 0.5rem;
+        padding: 0.75rem;
+        /* Larger hit area */
+        margin-right: -0.5rem;
+        /* Optical alignment adjustment */
         position: relative;
         z-index: 1001;
         /* Above absolute logo */
+    }
+
+    .mobile-menu-close {
+        padding: 0.75rem;
+        /* Larger hit area */
+        margin: -0.75rem -0.75rem 0 0;
     }
 }
 
