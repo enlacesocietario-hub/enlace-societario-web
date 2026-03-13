@@ -1,15 +1,30 @@
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    overflow-x: hidden;
+    width: 100%;
+    position: relative;
+}
+
 /* --- Structure --- */
 .container {
     width: 100%;
     max-width: var(--container-width);
     margin: 0 auto;
     padding: 0 var(--container-padding);
+    box-sizing: border-box;
+    /* Crucial for width: 100% with padding */
 }
 
 @media (max-width: 768px) {
     .container {
         padding: 0 1.5rem;
-        /* Increased side padding for better legibility on mobile */
+        width: 100%;
+        max-width: 100vw;
+        box-sizing: border-box;
     }
 }
 
@@ -307,8 +322,10 @@
     }
 
     .hero {
-        padding: var(--space-12) 0;
+        padding: 3rem 1.5rem !important;
+        /* Added side padding to prevent choking */
         text-align: center;
+        box-sizing: border-box;
     }
 
     .hero-content {
@@ -375,6 +392,8 @@
     .metrics-grid {
         padding: 0 1.5rem !important;
         gap: 1.5rem !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
     }
 
     /* --- Mobile Menu Internal Styles --- */
@@ -411,9 +430,14 @@
     .mobile-menu-close {
         background: none;
         border: none;
-        font-size: 2rem;
+        font-size: 2.5rem;
+        /* Larger for better visibility */
         color: var(--color-primary);
         cursor: pointer;
+        padding: 0.5rem;
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
     }
 
     .mobile-nav ul {

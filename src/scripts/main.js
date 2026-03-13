@@ -19,17 +19,44 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Future: Form validation logic here
 
-    /* --- Mobile Menu --- */
+    /* --- Mobile Menu Logic --- */
     const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
     const mobileMenuClose = document.querySelector('.mobile-menu-close');
     const mobileMenu = document.getElementById('mobileMenu');
     const body = document.body;
 
+    function toggleMobileMenu() {
+        console.log('Toggling menu');
+        const isOpen = mobileMenu.classList.contains('is-open');
+
+        if (!isOpen) {
+            // Opening
+            console.log('Opening menu');
+            mobileMenu.style.display = 'flex';
+            // Force reflow
+            mobileMenu.offsetHeight;
+            mobileMenu.classList.add('is-open');
+            body.classList.add('menu-open');
+            body.style.overflow = 'hidden';
+        } else {
+            // Closing
+            console.log('Closing menu');
+            mobileMenu.classList.remove('is-open');
+            body.classList.remove('menu-open');
+            body.style.overflow = '';
+            // Wait for transition (300ms)
+            setTimeout(() => {
+                if (!mobileMenu.classList.contains('is-open')) {
+                    mobileMenu.style.display = 'none';
+                }
+            }, 300);
+        }
+    }
+
     if (mobileMenuToggle && mobileMenu) {
         mobileMenuToggle.addEventListener('click', (e) => {
             e.preventDefault();
-            mobileMenu.classList.add('is-open');
-            body.style.overflow = 'hidden';
+            toggleMobileMenu();
         });
 
         if (mobileMenuClose) {
@@ -40,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Close on link click
-        const mobileLinks = mobileMenu.querySelectorAll('a');
+        const mobileLinks = mobileMenu.querySelectorAll('a:not(.mobile-dropdown-header > a)');
         mobileLinks.forEach(link => {
             link.addEventListener('click', () => {
                 toggleMobileMenu();
@@ -66,11 +93,10 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        // Close on backdrop click
+        // Close on backdrop click (optional logic)
         mobileMenu.addEventListener('click', (e) => {
             if (e.target === mobileMenu) {
-                mobileMenu.classList.remove('is-open');
-                body.style.overflow = '';
+                toggleMobileMenu();
             }
         });
     }
