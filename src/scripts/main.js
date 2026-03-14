@@ -1,6 +1,26 @@
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Enlace Societario loaded');
 
+    /* --- Transparent Navbar Scroll Logic --- */
+    const mainHeader = document.querySelector('.main-header');
+    const SCROLL_THRESHOLD = 50;
+
+    if (mainHeader && document.body.classList.contains('has-transparent-nav')) {
+        const handleScroll = () => {
+            if (window.scrollY > SCROLL_THRESHOLD) {
+                mainHeader.classList.add('is-scrolled');
+            } else {
+                mainHeader.classList.remove('is-scrolled');
+            }
+        };
+
+        // Initial check in case the page is loaded scrolled down
+        handleScroll();
+
+        // Add scroll listener
+        window.addEventListener('scroll', handleScroll, { passive: true });
+    }
+
     /* --- FAQ Accordion (Exclusive) --- */
     const faqItems = document.querySelectorAll('.faq-item');
 

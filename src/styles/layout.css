@@ -12,6 +12,15 @@ body {
 }
 
 /* --- Structure --- */
+main {
+    padding-top: var(--header-height);
+    flex-grow: 1;
+}
+
+body.has-transparent-nav main {
+    padding-top: 0;
+}
+
 .container {
     width: 100%;
     max-width: var(--container-width);
@@ -56,16 +65,50 @@ body {
     color: var(--color-text-white);
 }
 
-/* --- Header / Navigation --- */
 .main-header {
     height: var(--header-height);
     background-color: var(--color-bg-body);
     box-shadow: var(--shadow-sm);
-    position: sticky;
+    position: fixed;
     top: 0;
+    left: 0;
+    width: 100%;
     z-index: 1000;
     display: flex;
     align-items: center;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Transparent Nav State */
+body.has-transparent-nav .main-header:not(.is-scrolled) {
+    background-color: transparent;
+    box-shadow: none;
+}
+
+body.has-transparent-nav .main-header:not(.is-scrolled) .nav-link {
+    color: var(--color-text-white);
+}
+
+body.has-transparent-nav .main-header:not(.is-scrolled) .nav-link:hover {
+    color: var(--color-accent-light);
+}
+
+body.has-transparent-nav .main-header:not(.is-scrolled) .logo-dark {
+    display: none !important;
+}
+
+body.has-transparent-nav .main-header:not(.is-scrolled) .logo-white {
+    display: block !important;
+}
+
+body.has-transparent-nav .main-header:not(.is-scrolled) .mobile-menu-toggle {
+    color: var(--color-text-white);
+}
+
+/* Solid/Scrolled Nav State */
+.main-header.is-scrolled {
+    background-color: var(--color-bg-body);
+    box-shadow: var(--shadow-sm);
 }
 
 .main-header .container {
@@ -492,7 +535,7 @@ body {
 /* --- Navigation & Header Fixes --- */
 .main-header {
     z-index: 1000;
-    position: relative;
+    /* Removed redundant relative positioning as it's now fixed globally */
 }
 
 /* Desktop: Hide mobile-only elements */

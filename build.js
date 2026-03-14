@@ -62,6 +62,7 @@ function renderLayout(content, meta = {}) {
     const ogType = meta.type || 'website';
     const author = meta.author || 'Enlace Societario';
     const ogArticleMeta = meta.articleMeta || '';
+    const bodyClass = meta.bodyClass || '';
 
     layout = layout.replace(/{{content}}/g, content);
     layout = layout.replace(/{{meta_title}}/g, title);
@@ -74,6 +75,7 @@ function renderLayout(content, meta = {}) {
     layout = layout.replace(/{{schema_json}}/g, meta.schema || '');
     layout = layout.replace(/{{extra_meta}}/g, meta.extraMeta || '');
     layout = layout.replace(/{{current_year}}/g, new Date().getFullYear());
+    layout = layout.replace(/{{body_class}}/g, bodyClass);
 
     return layout;
 }
@@ -253,25 +255,29 @@ async function build() {
             title: 'Constitución de Sociedades en Argentina | Enlace Societario',
             description: 'Especialistas en constitución, reforma y regularización de sociedades en Argentina. Asesoramiento legal y contable con más de 20 años de experiencia.',
             priority: '1.0',
-            changefreq: 'daily'
+            changefreq: 'daily',
+            bodyClass: 'has-transparent-nav'
         },
         'servicios.html': {
             title: 'Servicios Societarios y Contables en Argentina | Enlace',
             description: 'Constitución de SRL y SA, reformas societarias, resolución de conflictos y servicios contables. Soluciones legales claras y eficientes.',
             priority: '0.9',
-            changefreq: 'monthly'
+            changefreq: 'monthly',
+            bodyClass: 'has-transparent-nav'
         },
         'nosotros.html': {
             title: 'Estudio Especialista en Derecho Societario | Enlace',
             description: 'Más de 20 años asesorando empresas en Argentina. Equipo profesional enfocado en seguridad jurídica y soluciones eficientes.',
             priority: '0.8',
-            changefreq: 'monthly'
+            changefreq: 'monthly',
+            bodyClass: 'has-transparent-nav'
         },
         'contacto.html': {
             title: 'Contacto para Asesoramiento Societario en Argentina | Enlace',
             description: 'Comunicate con nuestro equipo para recibir asesoramiento personalizado en trámites societarios y contables. Soluciones rápidas y profesionales.',
             priority: '0.8',
-            changefreq: 'monthly'
+            changefreq: 'monthly',
+            bodyClass: 'has-transparent-nav'
         },
         'herramientas.html': {
             title: 'Herramientas para emprendedores y empresas | Enlace Societario',
@@ -316,7 +322,8 @@ async function build() {
             title: info.title,
             description: info.description,
             canonical: canonical,
-            extraMeta: info.noindex ? '<meta name="robots" content="noindex, follow">' : ''
+            extraMeta: info.noindex ? '<meta name="robots" content="noindex, follow">' : '',
+            bodyClass: info.bodyClass || ''
         });
 
         let outputPath;
