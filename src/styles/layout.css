@@ -279,9 +279,9 @@ body.has-transparent-nav .main-header:not(.is-scrolled) .mobile-menu-toggle {
 
 /* --- Footer --- */
 .main-footer {
-    background-color: var(--color-primary-dark);
-    color: var(--color-text-light);
-    padding: var(--space-16) 0 var(--space-8);
+    background-color: var(--color-primary);
+    color: var(--color-text-white);
+    padding: 4rem 0 2rem;
     margin-top: auto;
     border-radius: var(--radius-lg) var(--radius-lg) 0 0;
 }
@@ -311,6 +311,24 @@ body.has-transparent-nav .main-header:not(.is-scrolled) .mobile-menu-toggle {
     margin-bottom: var(--space-3);
 }
 
+.footer-brand {
+    margin-bottom: 2rem;
+}
+
+.footer-logo-img {
+    max-height: 60px;
+    width: auto;
+    object-fit: contain;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.footer-description {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: #e0e0e0;
+}
+
 .footer-info p {
     font-size: var(--text-sm);
     opacity: 0.8;
@@ -324,6 +342,81 @@ body.has-transparent-nav .main-header:not(.is-scrolled) .mobile-menu-toggle {
 
     .hero h1 {
         font-size: var(--text-4xl);
+    }
+}
+
+/* --- Mobile Specific Fixes --- */
+@media (max-width: 768px) {
+
+    /* Force initial transparency for ALL mobile pages over the top content block */
+    main {
+        padding-top: 0 !important;
+    }
+
+    .main-header:not(.is-scrolled) {
+        background-color: transparent !important;
+        box-shadow: none !important;
+    }
+
+    /* Condition 1: Pages with Dark Hero (has-transparent-nav)
+       -> Use WHITE text and logo (high contrast on dark) */
+    body.has-transparent-nav .main-header:not(.is-scrolled):not(.is-open) .mobile-menu-toggle {
+        color: var(--color-text-white) !important;
+    }
+
+    body.has-transparent-nav .main-header:not(.is-scrolled):not(.is-open) .logo-dark {
+        display: none !important;
+    }
+
+    body.has-transparent-nav .main-header:not(.is-scrolled):not(.is-open) .logo-white {
+        display: block !important;
+    }
+
+    /* Condition 2: Pages with Light Background (NO has-transparent-nav, e.g. blog post view)
+       -> Use DARK text and logo (high contrast on light) */
+    body:not(.has-transparent-nav) .main-header:not(.is-scrolled):not(.is-open) .mobile-menu-toggle {
+        color: var(--color-primary) !important;
+    }
+
+    body:not(.has-transparent-nav) .main-header:not(.is-scrolled):not(.is-open) .logo-white {
+        display: none !important;
+    }
+
+    body:not(.has-transparent-nav) .main-header:not(.is-scrolled):not(.is-open) .logo-dark {
+        display: block !important;
+    }
+
+    /* Scrolled / Open State overrides
+       When scrolled OR menu is open, everything MUST be solid and legible */
+    .main-header.is-scrolled,
+    .main-header.is-open {
+        background-color: var(--color-bg-body) !important;
+        box-shadow: var(--shadow-sm) !important;
+    }
+
+    .main-header.is-scrolled .mobile-menu-toggle,
+    .main-header.is-open .mobile-menu-toggle {
+        color: var(--color-primary) !important;
+    }
+
+    .main-header.is-scrolled .logo-white,
+    .main-header.is-open .logo-white {
+        display: none !important;
+    }
+
+    .main-header.is-scrolled .logo-dark,
+    .main-header.is-open .logo-dark {
+        display: block !important;
+    }
+
+    /* Ensure the mobile nav panel is strictly solid */
+    .main-nav {
+        background-color: var(--color-bg-body) !important;
+    }
+
+    .footer-content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
     }
 }
 
@@ -351,12 +444,13 @@ body.has-transparent-nav .main-header:not(.is-scrolled) .mobile-menu-toggle {
     }
 
     .mobile-menu-toggle {
-        display: block;
+        display: none;
         background: none;
         border: none;
-        color: var(--color-primary);
         font-size: 1.5rem;
+        color: var(--color-primary);
         cursor: pointer;
+        transition: color 0.3s ease;
     }
 
     .grid-3,

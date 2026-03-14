@@ -284,21 +284,24 @@ async function build() {
             description: 'Utilizá nuestras herramientas gratuitas para evaluar si te conviene ser monotributo, responsable inscripto o tener una sociedad y analizar qué tipo de sociedad puede adaptarse mejor a tu proyecto.',
             priority: '0.9',
             changefreq: 'monthly',
-            slug: 'herramientas'
+            slug: 'herramientas',
+            bodyClass: 'has-transparent-nav'
         },
         'herramientas-monotributo-vs-responsable-inscripto.html': {
             title: '¿Monotributo, Responsable Inscripto o Sociedad? Calculadora gratuita | Enlace Societario',
             description: 'Evaluá gratis la mejor estructura fiscal para tu negocio en Argentina. Compará Monotributo vs Responsable Inscripto vs Sociedad con nuestro test inteligente.',
             priority: '0.9',
             changefreq: 'monthly',
-            slug: 'herramientas/monotributo-vs-responsable-inscripto'
+            slug: 'herramientas/monotributo-vs-responsable-inscripto',
+            bodyClass: 'has-transparent-nav'
         },
         'herramientas-que-sociedad-conviene.html': {
             title: '¿Qué tipo de sociedad te conviene? Test gratuito | Enlace Societario',
             description: 'Descubrí qué tipo de sociedad podría adaptarse mejor a tu proyecto en Argentina. Realizá nuestro test gratuito y obtené una recomendación orientativa al instante.',
             priority: '0.9',
             changefreq: 'monthly',
-            slug: 'herramientas/que-tipo-de-sociedad-te-conviene'
+            slug: 'herramientas/que-tipo-de-sociedad-te-conviene',
+            bodyClass: 'has-transparent-nav'
         },
         '404.html': {
             title: 'Error 404 | Enlace Societario',
@@ -478,7 +481,8 @@ async function build() {
         const blogIndexHtml = renderLayout(blogListTemplate, {
             title: 'Actualidad Societaria en Argentina | Blog Enlace',
             description: 'Guías prácticas y novedades sobre constitución de sociedades, reformas y normativa societaria en Argentina.',
-            canonical: canonical
+            canonical: canonical,
+            bodyClass: 'has-transparent-nav'
         });
 
         ensureDir(path.join(CONFIG.outputDir, 'blog'));

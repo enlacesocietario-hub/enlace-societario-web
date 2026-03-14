@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const mainHeader = document.querySelector('.main-header');
     const SCROLL_THRESHOLD = 50;
 
-    if (mainHeader && document.body.classList.contains('has-transparent-nav')) {
+    if (mainHeader) {
         const handleScroll = () => {
             if (window.scrollY > SCROLL_THRESHOLD) {
                 mainHeader.classList.add('is-scrolled');
