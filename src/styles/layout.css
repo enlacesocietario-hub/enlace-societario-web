@@ -422,7 +422,6 @@ body.has-transparent-nav .main-header:not(.is-scrolled) .mobile-menu-toggle {
 
 @media (max-width: 768px) {
     .main-header {
-        position: relative;
         height: auto;
         padding: var(--space-4) 0;
     }
