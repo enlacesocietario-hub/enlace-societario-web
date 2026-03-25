@@ -8,8 +8,14 @@
 
 <section class="section section-bg-alt">
     <div class="container" style="max-width: 800px;">
-        <form id="contact-form" class="card" style="border-top: none; box-shadow: var(--shadow-lg);" action="#"
-            method="POST">
+        
+        <!-- Tally Form Toggle Container -->
+        <div class="tally-form-container card" style="border-top: none; box-shadow: var(--shadow-lg); padding: 0;">
+            <iframe data-tally-src="https://tally.so/embed/44Lodd?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1&formEventsForwarding=1" loading="lazy" width="100%" height="1781" frameborder="0" marginheight="0" marginwidth="0" title="Contanos sobre tu proyecto"></iframe>
+        </div>
+
+        <div class="legacy-form-container">
+            <form id="contact-form" class="card" style="border-top: none; box-shadow: var(--shadow-lg);" action="#" method="POST">
             <div class="form-group">
                 <label for="nombre">Nombre completo</label>
                 <input type="text" id="nombre" name="nombre" required>
@@ -64,7 +70,7 @@
                     Consulta</button>
             </div>
         </form>
-        </form>
+        </div>
     </div>
 </section>
 

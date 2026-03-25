@@ -21,6 +21,21 @@ body.has-transparent-nav main {
     padding-top: 0;
 }
 
+/* --- Form Mode Toggle System --- */
+body[data-form-mode="tally"] .legacy-form-container {
+    display: none !important;
+}
+body[data-form-mode="tally"] .tally-form-container {
+    display: block !important;
+}
+
+body[data-form-mode="legacy"] .tally-form-container {
+    display: none !important;
+}
+body[data-form-mode="legacy"] .legacy-form-container {
+    display: block !important;
+}
+
 .container {
     width: 100%;
     max-width: var(--container-width);
@@ -243,6 +258,30 @@ body.has-transparent-nav .main-header:not(.is-scrolled) .mobile-menu-toggle {
     line-height: 1.1;
 }
 
+/* --- Typewriter Effect --- */
+.typewriter-cursor {
+    display: inline-block;
+    width: 0;
+    position: relative;
+    vertical-align: baseline;
+}
+
+.typewriter-cursor::after {
+    content: '';
+    position: absolute;
+    bottom: -0.1em;
+    left: 2px;
+    width: 3px;
+    height: 1.1em;
+    background-color: var(--color-text-white);
+    animation: blink-cursor 0.9s step-end infinite;
+}
+
+@keyframes blink-cursor {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
 /* --- Metrics Section --- */
 .metrics-grid {
     display: grid;
@@ -448,7 +487,7 @@ body.has-transparent-nav .main-header:not(.is-scrolled) .mobile-menu-toggle {
     }
 
     .hero {
-        padding: 6rem 1.5rem 2.5rem 1.5rem !important;
+        padding: 8.5rem 1.5rem 2.5rem 1.5rem !important;
         /* Added huge top padding to clear header and side padding */
         text-align: center;
         box-sizing: border-box;

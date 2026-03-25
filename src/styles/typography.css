@@ -80,6 +80,7 @@ a {
 @media (max-width: 768px) {
     h1 {
         font-size: var(--text-3xl);
+        margin-top: 2rem;
     }
 
     h2 {

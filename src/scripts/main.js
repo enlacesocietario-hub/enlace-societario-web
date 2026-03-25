@@ -1,6 +1,63 @@
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Enlace Societario loaded');
 
+    /* --- Tally Form Lazy Injection --- */
+    if (document.body.getAttribute('data-form-mode') === 'tally' && document.querySelector('iframe[data-tally-src]')) {
+        var d=document,w="https://tally.so/widgets/embed.js",v=function(){"undefined"!=typeof Tally?Tally.loadEmbeds():d.querySelectorAll("iframe[data-tally-src]:not([src])").forEach((function(e){e.src=e.dataset.tallySrc}))};if("undefined"!=typeof Tally)v();else if(d.querySelector('script[src="'+w+'"]')==null){var s=d.createElement("script");s.src=w,s.onload=v,s.onerror=v,d.body.appendChild(s);}
+    }
+
+    /* --- Typewriter Effect for Hero H1 --- */
+    const typewriterEl = document.getElementById('hero-typewriter');
+    if (typewriterEl) {
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        
+        if (prefersReducedMotion) {
+            typewriterEl.style.visibility = 'visible';
+        } else {
+            const text = typewriterEl.textContent;
+            typewriterEl.innerHTML = '';
+            typewriterEl.style.visibility = 'visible';
+            
+            const chars = [];
+            // We iterate over the characters to wrap each in a span.
+            for (let i = 0; i < text.length; i++) {
+                const charSpan = document.createElement('span');
+                charSpan.textContent = text[i];
+                charSpan.style.visibility = 'hidden';
+                typewriterEl.appendChild(charSpan);
+                chars.push(charSpan);
+            }
+            
+            const cursor = document.createElement('span');
+            cursor.className = 'typewriter-cursor';
+            typewriterEl.appendChild(cursor);
+            
+            let charIndex = 0;
+            const baseSpeed = 40; // Base speed per char in ms
+            
+            function typeNextChar() {
+                if (charIndex < chars.length) {
+                    chars[charIndex].style.visibility = 'visible';
+                    // Move the cursor right after the currently visible character
+                    typewriterEl.insertBefore(cursor, chars[charIndex].nextSibling);
+                    charIndex++;
+                    
+                    // Minor organic speed variations
+                    const randomDelay = baseSpeed + (Math.random() * 20 - 10);
+                    setTimeout(typeNextChar, randomDelay);
+                } else {
+                    // Turn off cursor after a while to stay elegant
+                    setTimeout(() => {
+                        cursor.style.display = 'none';
+                    }, 4000);
+                }
+            }
+            
+            // Wait slightly before starting the animation
+            setTimeout(typeNextChar, 300);
+        }
+    }
+
     /* --- Transparent Navbar Scroll Logic --- */
     const mainHeader = document.querySelector('.main-header');
     const SCROLL_THRESHOLD = 50;

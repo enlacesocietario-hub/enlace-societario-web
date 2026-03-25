@@ -5,8 +5,8 @@
     <section class="hero" style="background: transparent;">
         <div class="container" style="text-align: center;">
             <div class="hero-content" style="margin: 0 auto; max-width: 800px;">
-                <h1 style="font-size: 4rem; line-height: 1.1; margin-bottom: 1.5rem;">Constituí y gestioná tu empresa
-                    con expertos</h1>
+                <h1 id="hero-typewriter" style="font-size: 4rem; line-height: 1.1; margin-bottom: 1.5rem; visibility: hidden;">Constituí y gestioná tu empresa con expertos</h1>
+                <noscript><style>#hero-typewriter { visibility: visible !important; }</style></noscript>
                 <p>Brindamos soluciones legales y contables para que tu sociedad crezca con seguridad jurídica, sin
                     burocracia ni demoras innecesarias.</p>
                 <div style="margin-top: 2rem;">
@@ -346,7 +346,13 @@
             <p>Déjenos sus datos y un especialista lo contactará a la brevedad.</p>
         </div>
 
-        <form class="card" style="border-top: none; box-shadow: var(--shadow-lg);" action="#" method="POST">
+        <!-- Tally Form Toggle Container -->
+        <div class="tally-form-container card" style="border-top: none; box-shadow: var(--shadow-lg); padding: 0;">
+            <iframe data-tally-src="https://tally.so/embed/44Lodd?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1&formEventsForwarding=1" loading="lazy" width="100%" height="1781" frameborder="0" marginheight="0" marginwidth="0" title="Contanos sobre tu proyecto"></iframe>
+        </div>
+
+        <div class="legacy-form-container">
+            <form class="card" style="border-top: none; box-shadow: var(--shadow-lg);" action="#" method="POST">
             <div class="form-group">
                 <label for="nombre">Nombre completo</label>
                 <input type="text" id="nombre" name="nombre" required>
@@ -399,6 +405,7 @@
                 <button type="submit" class="btn btn-primary" title="Enviar consulta para recibir asesoramiento"
                     style="width: 100%;">Enviar Consulta</button>
             </div>
-        </form>
+            </form>
+        </div>
     </div>
 </section>
