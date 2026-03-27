@@ -93,178 +93,138 @@ document.addEventListener('DOMContentLoaded', () => {
             ? REGIMEN_CONFIG.monotributo.facturacion_anual_max_servicios
             : REGIMEN_CONFIG.monotributo.facturacion_anual_max_bienes;
 
-        if (facturacion_anual > limitFacturacion) {
-            erroresLegales.push(`Tu facturación anual estimada ($${facturacion_anual.toLocaleString()}) supera el límite permitido para el Monotributo ($${limitFacturacion.toLocaleString()}).`);
-        }
-        if (superficie > REGIMEN_CONFIG.monotributo.superficie_max) {
-            erroresLegales.push(`La superficie afectada (${superficie} m²) supera el límite de ${REGIMEN_CONFIG.monotributo.superficie_max} m².`);
-        }
-        if (energia > REGIMEN_CONFIG.monotributo.energia_max) {
-            erroresLegales.push(`El consumo eléctrico anual (${energia} kWh) supera el límite de ${REGIMEN_CONFIG.monotributo.energia_max} kWh.`);
-        }
-        if (alquiler > REGIMEN_CONFIG.monotributo.alquiler_anual_max) {
-            erroresLegales.push(`El alquiler anual ($${alquiler.toLocaleString()}) supera el límite de $${REGIMEN_CONFIG.monotributo.alquiler_anual_max.toLocaleString()}.`);
-        }
-        if (data.tipo_actividad === 'bienes' && precio_unitario > REGIMEN_CONFIG.monotributo.precio_unitario_max) {
-            erroresLegales.push(`El precio unitario máximo ($${precio_unitario.toLocaleString()}) supera el límite permitido de $${REGIMEN_CONFIG.monotributo.precio_unitario_max.toLocaleString()}.`);
+        if (facturacion_anual > limitFacturacion) erroresLegales.push(`Facturación anual excede el tope ($${limitFacturacion.toLocaleString()}).`);
+        if (superficie > REGIMEN_CONFIG.monotributo.superficie_max) erroresLegales.push(`Superficie supera los ${REGIMEN_CONFIG.monotributo.superficie_max} m².`);
+        if (energia > REGIMEN_CONFIG.monotributo.energia_max) erroresLegales.push(`Consumo eléctrico supera ${REGIMEN_CONFIG.monotributo.energia_max} kWh.`);
+        if (alquiler > REGIMEN_CONFIG.monotributo.alquiler_anual_max) erroresLegales.push(`Alquiler anual excede $${REGIMEN_CONFIG.monotributo.alquiler_anual_max.toLocaleString()}.`);
+        if (data.tipo_actividad === 'bienes' && precio_unitario > REGIMEN_CONFIG.monotributo.precio_unitario_max) erroresLegales.push(`Precio unitario mayor a $${REGIMEN_CONFIG.monotributo.precio_unitario_max.toLocaleString()}.`);
+
+        // 2. VARIABLES CLAVE
+        const isExcludedFromMono = erroresLegales.length > 0;
+        
+        let scoreEcon = 0;
+        scoreEcon += REGIMEN_CONFIG.scoring_economico.margen[data.margen] || 0;
+        scoreEcon += REGIMEN_CONFIG.scoring_economico.costos_iva[data.costos_iva] || 0;
+        scoreEcon += REGIMEN_CONFIG.scoring_economico.clientes[data.tipo_clientes] || 0;
+        const isRIAcademicallyBetter = scoreEcon <= -2;
+
+        const isPlural = data.cantidad_socios !== '1';
+        const wantsSeparation = data.separacion_patrimonio === 'si';
+        const hasHighComplexity = data.cantidad_empleados === '10+';
+        const hasModerateComplexity = data.cantidad_empleados === '6-10';
+        const expectsHighGrowth = data.crecimiento_esperado === 'alto';
+
+        // 3. ÁRBOL DE DECISIÓN
+        let resultType = "";
+        let contextBullets = [];
+
+        if (isPlural || wantsSeparation || hasHighComplexity) {
+            resultType = "SOCIEDAD";
+            if (isPlural) contextBullets.push("El proyecto involucra a más de un socio, lo que exige reglas claras y formales.");
+            if (wantsSeparation) contextBullets.push("Priorizás la separación de tu patrimonio personal del riesgo comercial.");
+            if (hasHighComplexity) contextBullets.push("Tu estructura operativa y de nómina ya requiere una organización corporativa.");
+        } else if (isExcludedFromMono || isRIAcademicallyBetter) {
+            if (expectsHighGrowth || hasModerateComplexity) {
+                resultType = "ANALISIS";
+                if (isExcludedFromMono) contextBullets.push("Tus parámetros actuales te excluyen del Monotributo.");
+                contextBullets.push("Además, tenés una estructura operativa en crecimiento que podría hacer ineficiente tributar como persona física.");
+            } else {
+                resultType = "RI";
+                if (isExcludedFromMono) contextBullets.push("Tus parámetros actuales superan los topes legales del Monotributo.");
+                if (isRIAcademicallyBetter) contextBullets.push("Tu estructura de costos y tipo de clientes hacen más eficiente deducir IVA y Ganancias.");
+            }
+        } else if (scoreEcon >= 0 && !expectsHighGrowth && !hasModerateComplexity) {
+            resultType = "MONOTRIBUTO";
+            contextBullets.push("Tus parámetros legales (facturación, superficie, etc.) están dentro de los límites permitidos.");
+            contextBullets.push("Tu estructura de costos y clientes hace conveniente aprovechar este régimen simplificado.");
+        } else {
+            resultType = "ANALISIS";
+            contextBullets.push("Estás dentro de los parámetros legales del Monotributo o en un límite fronterizo.");
+            if (expectsHighGrowth) contextBullets.push("Sin embargo, tu expectativa de crecimiento indica que pronto necesitarás escalar tu estructura fiscal.");
+            if (scoreEcon < 0) contextBullets.push("Tus márgenes cambiantes o clientes B2B sugieren que el Monotributo podría empezar a ser un tope para tus operaciones.");
         }
 
-        // 2. SCORING ECONÓMICO
-        let scoreEconomico = 0;
-        scoreEconomico += REGIMEN_CONFIG.scoring_economico.margen[data.margen] || 0;
-        scoreEconomico += REGIMEN_CONFIG.scoring_economico.costos_iva[data.costos_iva] || 0;
-        scoreEconomico += REGIMEN_CONFIG.scoring_economico.clientes[data.tipo_clientes] || 0;
-
-        // 3. SCORING SOCIEDAD
-        let scoreSociedad = 0;
-        scoreSociedad += REGIMEN_CONFIG.scoring_sociedad.socios[data.cantidad_socios] || 0;
-        scoreSociedad += REGIMEN_CONFIG.scoring_sociedad.empleados[data.cantidad_empleados] || 0;
-        scoreSociedad += REGIMEN_CONFIG.scoring_sociedad.crecimiento[data.crecimiento_esperado] || 0;
-        scoreSociedad += REGIMEN_CONFIG.scoring_sociedad.patrimonio[data.separacion_patrimonio] || 0;
-
-        displayResults(erroresLegales, scoreEconomico, scoreSociedad);
+        displayUnifiedResult(resultType, contextBullets);
     });
 
-    function displayResults(errores, scoreEcon, scoreSoc) {
+    function displayUnifiedResult(type, bullets) {
         resultsSection.style.display = 'block';
         resultsSection.scrollIntoView({ behavior: 'smooth' });
 
-        const encuadreBlock = document.getElementById('res-encuadre');
-        const convenienciaBlock = document.getElementById('res-conveniencia');
-        const estructuraBlock = document.getElementById('res-estructura');
-        const mainConclusion = document.getElementById('main-conclusion');
-        const ctaWhatApp = document.getElementById('cta-whatsapp');
+        const singleResultContainer = document.getElementById('single-result-container');
+        if (!singleResultContainer) return;
 
-        // Resultado 1: Encuadre
-        if (errores.length > 0) {
-            encuadreBlock.innerHTML = `
-                <div class="res-card res-bad">
-                    <i class="fas fa-times-circle"></i>
-                    <h4>Encuadre Legal</h4>
-                    <p><strong>Excluido del Monotributo.</strong></p>
-                    <ul>${errores.map(e => `<li>${e}</li>`).join('')}</ul>
+        let title = "";
+        let desc = "";
+        let warning = "";
+        let ctaText = "";
+        let waMessage = "";
+
+        switch(type) {
+            case "MONOTRIBUTO":
+                title = "Monotributo Recomendado";
+                desc = "La estructura ideal para tu etapa actual: ágil, simplificada y con menor carga administrativa.";
+                warning = "Deberás hacer un seguimiento proactivo de tu facturación y categorización de forma semestral para evitar una exclusión de oficio por parte de AFIP.";
+                ctaText = "Asesoramiento preventivo mensual";
+                waMessage = `Hola, hice el test y mi resultado fue: ${title}. Me gustaría conversar sobre el mantenimiento impositivo mensual.`;
+                break;
+            case "RI":
+                title = "Responsable Inscripto Recomendado";
+                desc = "Una estructura impositiva general que acompaña tu volumen de operación y te permite optimizar costos deduciendo crédito fiscal.";
+                warning = "Operar como Responsable Inscripto requiere liquidaciones mensuales de IVA y una planificación más estricta de Ganancias. La carga administrativa es mayor que en el Monotributo.";
+                ctaText = "Consultar sobre liquidación de impuestos";
+                waMessage = `Hola, hice el test y mi resultado fue: ${title}. Necesito asesoramiento sobre la inscripción y liquidaciones mensuales.`;
+                break;
+            case "SOCIEDAD":
+                title = "Sociedad Comercial Recomendable";
+                desc = "Dada tu estructura o requerimientos de responsabilidad, constituir una Sociedad (SRL o SAS) es el camino más seguro para proteger tu patrimonio y operar formalmente.";
+                warning = "Las sociedades tienen costos de constitución y mantenimiento mayores. Es vital elegir el tipo societario (SAS, SRL, SA) adecuado para no asumir más rigidez de la necesaria.";
+                ctaText = "Consultar sobre constitución de sociedades";
+                waMessage = `Hola, hice el test y mi resultado fue: ${title}. Me gustaría asesorarme sobre qué tipo de sociedad crear y los costos asociados.`;
+                break;
+            case "ANALISIS":
+                title = "Escenario en Transición / Requiere Análisis";
+                desc = "Tu situación actual presenta grises operativos o legales. Una decisión automatizada tiene alto margen de error para tu caso.";
+                warning = "Estás en un punto donde tributar como independiente podría volverse ineficiente rápido, pero crear una sociedad quizás aún sea costoso. Necesitamos armar una proyección financiera breve.";
+                ctaText = "Agendar análisis personalizado";
+                waMessage = `Hola, hice el test y mi resultado fue: ${title}. Estoy en un punto de crecimiento/transición y necesito evaluar si me conviene ser RI o armar una sociedad.`;
+                break;
+        }
+
+        let html = `
+            <div style="background: white; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); overflow: hidden; border: 1px solid var(--color-border); max-width: 800px; margin: 0 auto;">
+                <div style="background: var(--color-bg-alt); padding: 2.5rem; text-align: center; border-bottom: 1px solid var(--color-border);">
+                    <span style="font-size: 0.8rem; font-weight: 800; color: var(--color-accent); text-transform: uppercase; letter-spacing: 0.1em; display: block; margin-bottom: 1rem;">DIAGNÓSTICO FINAL</span>
+                    <h3 style="color: var(--color-primary); font-size: 2.2rem; margin-bottom: 1rem; line-height: 1.2;">${title}</h3>
+                    <p style="font-size: 1.15rem; color: var(--color-text-body); max-width: 600px; margin: 0 auto;">${desc}</p>
                 </div>
-            `;
-        } else {
-            encuadreBlock.innerHTML = `
-                <div class="res-card res-good">
-                    <i class="fas fa-check-circle"></i>
-                    <h4>Encuadre Legal</h4>
-                    <p>Tus parámetros están dentro de los límites permitidos para el régimen de Monotributo.</p>
+                
+                <div style="padding: 2.5rem; background: white;">
+                    <div style="margin-bottom: 2.5rem;">
+                        <h4 style="font-size: 1.1rem; color: var(--color-primary); margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.5rem;"><i class="fas fa-check-circle" style="color: #25D366;"></i> Por qué llegamos a esta conclusión:</h4>
+                        <ul style="list-style: none; padding: 0; margin: 0;">
+                            ${bullets.map(b => `<li style="margin-bottom: 0.85rem; padding-left: 1.75rem; position: relative;"><i class="fas fa-caret-right" style="position: absolute; left: 0; top: 0.25rem; color: var(--color-accent);"></i> ${b}</li>`).join('')}
+                        </ul>
+                    </div>
+                    
+                    <div style="background: rgba(255, 185, 56, 0.1); border-left: 4px solid var(--color-accent); padding: 1.5rem; border-radius: 0 8px 8px 0; margin-bottom: 2.5rem;">
+                        <h4 style="font-size: 1rem; color: var(--color-primary); margin-bottom: 0.5rem;"><i class="fas fa-exclamation-triangle" style="color: var(--color-accent);"></i> Factor de Riesgo / A tener en cuenta</h4>
+                        <p style="font-size: 0.95rem; color: var(--color-text-body); line-height: 1.5; margin: 0;">${warning}</p>
+                    </div>
+                    
+                    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                        <a href="/contacto" class="btn btn-primary" style="padding: 1rem 2rem;">${ctaText}</a>
+                        <a href="https://wa.me/5491167805489?text=${encodeURIComponent(waMessage)}" target="_blank" class="btn btn-secondary" style="padding: 1rem 2rem; background-color: #25D366; border-color: #25D366; color: white; display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="fab fa-whatsapp"></i> Hablar por WhatsApp
+                        </a>
+                    </div>
+                    <div id="share-container" style="margin-top: 1.5rem; text-align: center;"></div>
                 </div>
-            `;
-        }
-
-        // Resultado 2: Conveniencia Fiscal
-        let diagFiscal = "";
-        let classFiscal = "";
-        if (scoreEcon >= 4) {
-            diagFiscal = "Monotributo muy conveniente";
-            classFiscal = "res-good";
-        } else if (scoreEcon >= 0) {
-            diagFiscal = "Monotributo viable";
-            classFiscal = "res-mid";
-        } else if (scoreEcon >= -3) {
-            diagFiscal = "Analizar Responsable Inscripto";
-            classFiscal = "res-mid";
-        } else {
-            diagFiscal = "Responsable Inscripto recomendable";
-            classFiscal = "res-bad";
-        }
-
-        convenienciaBlock.innerHTML = `
-            <div class="res-card ${classFiscal}">
-                <i class="fas fa-chart-line"></i>
-                <h4>Conveniencia Fiscal</h4>
-                <p><strong>${diagFiscal}</strong></p>
-                <p>Basado en tu margen, costos con IVA y tipo de clientes.</p>
             </div>
         `;
 
-        // Resultado 3: Estructura
-        let diagSoc = "";
-        let classSoc = "";
-        if (scoreSoc >= 6) {
-            diagSoc = "Sociedad recomendable";
-            classSoc = "res-bad"; // Using bad color for "Society" as it's the most complex/expensive
-        } else if (scoreSoc >= 3) {
-            diagSoc = "Podría convenir una sociedad";
-            classSoc = "res-mid";
-        } else {
-            diagSoc = "No parece necesario crear una sociedad";
-            classSoc = "res-good";
-        }
-
-        estructuraBlock.innerHTML = `
-            <div class="res-card ${classSoc}">
-                <i class="fas fa-sitemap"></i>
-                <h4>Estructura de Negocio</h4>
-                <p><strong>${diagSoc}</strong></p>
-                <p>Evaluado según cantidad de socios, empleados y planes de crecimiento.</p>
-            </div>
-        `;
-
-        // Conclusión General
-        let finalTitle = "";
-        let finalDesc = "";
-        let btnText = "Agendar consulta con especialista";
-
-        if (errores.length > 0 || scoreEcon <= -4) {
-            if (scoreSoc >= 4) {
-                finalTitle = "Sociedad recomendable";
-                finalDesc = "Dada tu escala de negocio y estructura operativa, una SRL o SA te brindará la protección patrimonial y el marco fiscal adecuado para seguir creciendo.";
-                btnText = "Consultar sobre estructuración societaria";
-            } else {
-                finalTitle = "Responsable Inscripto recomendable";
-                finalDesc = "Tu nivel de facturación o estructura de costos supera los beneficios del Monotributo. Operar como Responsable Inscripto te permitirá deducir gastos e IVA de forma profesional.";
-                btnText = "Optimizar mi situación impositiva";
-            }
-        } else {
-            finalTitle = "Monotributo recomendado";
-            finalDesc = "Es la opción más simplificada y económica para tu situación actual. Te recomendamos realizar un monitoreo semestral de tus límites para evitar exclusiones sorpresivas.";
-            btnText = "Recibir asesoramiento preventivo";
-        }
-
-        mainConclusion.innerHTML = `
-            <div style="margin-bottom: 2rem;">
-                <h3 style="color: var(--color-primary); font-size: 1.75rem; margin-bottom: 1rem;">${finalTitle}</h3>
-                <p style="font-size: 1.15rem; color: var(--color-text-body); max-width: 800px; margin: 0 auto; line-height: 1.6;">${finalDesc}</p>
-            </div>
-        `;
-
-        // Botón principal dinámico
-        const mainBtn = resultsSection.querySelector('.btn-primary');
-        if (mainBtn) {
-            mainBtn.textContent = btnText;
-        }
-
-        // Ajustar Link WhatsApp según resultado
-        const waBase = "https://wa.me/5491167805489?text=";
-        const waMsg = encodeURIComponent(`Hola Enlace Societario, hice el test y el resultado fue: ${finalTitle}. Me gustaría recibir asesoramiento personalizado.`);
-        ctaWhatApp.href = waBase + waMsg;
-
-        // Bonus: Función compartir (opcional/prolija)
-        addShareFeature(finalTitle);
-    }
-
-    function addShareFeature(result) {
-        let shareContainer = document.getElementById('share-container');
-        if (!shareContainer) {
-            shareContainer = document.createElement('div');
-            shareContainer.id = 'share-container';
-            shareContainer.style.marginTop = '1.5rem';
-            document.querySelector('.main-result-box').appendChild(shareContainer);
-        }
-
-        const shareText = encodeURIComponent(`Hola! Hice el test de Enlace Societario y mi resultado fue: ${result}. Podés hacerlo acá: `);
-        const shareUrl = encodeURIComponent(window.location.href);
-
-        shareContainer.innerHTML = `
-            <button onclick="window.open('https://api.whatsapp.com/send?text=${shareText}${shareUrl}', '_blank')" 
-                    style="background: none; border: none; color: var(--color-text-body); font-size: 0.9rem; cursor: pointer; text-decoration: underline; display: flex; align-items: center; gap: 0.5rem; margin: 0 auto;">
-                <i class="fas fa-share-alt"></i> Compartir resultado por WhatsApp
-            </button>
-        `;
+        singleResultContainer.innerHTML = html;
+        addShareFeature(title);
     }
 
     // Feedback visual para el formulario de guía
