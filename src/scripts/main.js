@@ -1,6 +1,71 @@
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Enlace Societario loaded');
 
+    /* --- Google Sheets CRM Integration --- */
+    const sheetsFormUrl = 'https://script.google.com/macros/s/AKfycbzMrrDcec9reZWVm3LVxKj3XjhiNqLYIx8GE2s6ifcjySX6TxY32vawtwFgy5Vx1X3AEA/exec';
+
+    document.querySelectorAll('.legacy-form-container form').forEach(form => {
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const honey = form.querySelector('input[name="_honey"]');
+            if (honey && honey.value) {
+                // Posible bot, simulamos éxito sin enviar nada
+                form.reset();
+                return;
+            }
+
+            const btn = form.querySelector('button[type="submit"]');
+            const messagesContainer = form.querySelector('.form-messages');
+            const originalText = btn.innerHTML;
+            
+            btn.innerHTML = 'Enviando...';
+            btn.disabled = true;
+            if (messagesContainer) {
+                messagesContainer.style.color = 'var(--color-primary)';
+                messagesContainer.innerHTML = 'Procesando tu consulta...';
+            }
+
+            const formData = new FormData(form);
+            const encodedData = new URLSearchParams(formData).toString();
+
+            try {
+                const response = await fetch(sheetsFormUrl, {
+                    method: 'POST',
+                    body: encodedData,
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                });
+
+                if (response.ok) {
+                    btn.innerHTML = '¡Mensaje Enviado!';
+                    if (messagesContainer) {
+                        messagesContainer.style.color = 'green';
+                        messagesContainer.innerHTML = 'Hemos recibido tu consulta exitosamente. Un especialista se contactará a la brevedad.';
+                    }
+                    form.reset();
+                } else {
+                    throw new Error('Error en la respuesta del servidor');
+                }
+            } catch (error) {
+                console.error('Error enviando formulario:', error);
+                if (messagesContainer) {
+                    messagesContainer.style.color = 'red';
+                    messagesContainer.innerHTML = 'Ocurrió un problema al enviar el mensaje. Intenta nuevamente o contáctanos por WhatsApp.';
+                }
+            } finally {
+                // Rehabilitar botón luego de 3 segundos
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                    // Opcionalmente borrar mensaje si no fue éxito total
+                    if (messagesContainer) {
+                        setTimeout(() => { messagesContainer.innerHTML = ''; }, 6000);
+                    }
+                }, 3000);
+            }
+        });
+    });
+
     /* --- Tally Form Lazy Injection --- */
     if (document.body.getAttribute('data-form-mode') === 'tally' && document.querySelector('iframe[data-tally-src]')) {
         var d=document,w="https://tally.so/widgets/embed.js",v=function(){"undefined"!=typeof Tally?Tally.loadEmbeds():d.querySelectorAll("iframe[data-tally-src]:not([src])").forEach((function(e){e.src=e.dataset.tallySrc}))};if("undefined"!=typeof Tally)v();else if(d.querySelector('script[src="'+w+'"]')==null){var s=d.createElement("script");s.src=w,s.onload=v,s.onerror=v,d.body.appendChild(s);}

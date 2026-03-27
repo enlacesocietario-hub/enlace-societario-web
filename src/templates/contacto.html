@@ -64,7 +64,14 @@
                 <textarea id="descripcion" name="descripcion" rows="4"></textarea>
             </div>
 
-            <div style="margin-top: 2rem; text-align: center;">
+            <div aria-hidden="true" style="position: absolute; left: -9999px;">
+                <label for="_honey_contacto">Leave this field empty</label>
+                <input type="text" name="_honey" id="_honey_contacto" tabindex="-1" autocomplete="off">
+            </div>
+            
+            <div class="form-messages" style="margin-top: 1rem; text-align: center; font-weight: 500;"></div>
+
+            <div style="margin-top: 1rem; text-align: center;">
                 <button type="submit" class="btn btn-primary"
                     title="Enviar consulta para recibir asesoramiento personalizado" style="width: 100%;">Enviar
                     Consulta</button>
